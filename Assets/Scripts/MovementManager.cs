@@ -2,14 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static HandInputDirection;
 
 public class MovementManager : MonoBehaviour
 {
-    //Variables
-    private float distanceMultiplyer = 10;
-    private float localDistanceMultiplyer = 10;
-
-    private float bodyHandOffset = .4f;
+    
     //Instance
     public static MovementManager instance;
 
@@ -40,16 +37,12 @@ public class MovementManager : MonoBehaviour
 
     [SerializeField] private Hands domHand;
 
-    [SerializeField] public enum InputDirection
-    {
-        Neutral,
-        Up,
-        Down,
-        Left,
-        Right
-    }
+    //HandInputDirectionVars
 
-    [SerializeField] private InputDirection inputDirection;  
+    [SerializeField] private HandInputDirection domHandInputDirectionManager;
+    [SerializeField] private HandInputDirection nonDomHandInputDirectionManager;
+
+     
 
     public void Awake()
     {
@@ -77,7 +70,17 @@ public class MovementManager : MonoBehaviour
         domHandRB = domHandGO.GetComponent<Rigidbody>();
         nonDomHandRB = domHandRB.GetComponent<Rigidbody>();
 
+        domHandInputDirectionManager = domHandGO.GetComponent<HandInputDirection>();
+        nonDomHandInputDirectionManager = nonDomHandGO.GetComponent<HandInputDirection>();
+        Debug.Log("1");
         onDomHandSet?.Invoke(this, EventArgs.Empty);
+
+
+    }
+
+    public GameObject GetBodyObject()
+    {
+        return body;
     }
 
     public Hands GetDominantHandEnum()
@@ -95,73 +98,62 @@ public class MovementManager : MonoBehaviour
         return nonDomHandGO;
     }
 
-    public float GetHandDistanceFromBody(Transform hand)
-    {
-        
-        float distance = Vector3.Distance(body.transform.position, hand.position);
-        return distance * distanceMultiplyer;
-    }
+    
 
     public float GetDomHandDistanceFromBody()
     {
-        return  GetHandDistanceFromBody(domHandGO.transform);
+        return domHandInputDirectionManager.GetHandDistanceFromBody();
     }
 
     public float GetNonDomHandDistanceFromBody()
     {
-        return GetHandDistanceFromBody(nonDomHandGO.transform);
+        return nonDomHandInputDirectionManager.GetHandDistanceFromBody();
     }
 
-    public Vector3 GetLocalEulerAnglesOfHand(Transform hand)
-    {
-        return hand.localEulerAngles;
-    }
 
     public Vector3 GetLocalEulerAnglesOfDomHand()
     {
-        return GetLocalEulerAnglesOfHand(domHandGO.transform);
+        return domHandInputDirectionManager.GetLocalEulerAnglesOfHand();
     }
+
 
     public Vector3 GetLocalEulerAnglesOfNonDomHand()
     {
-        return GetLocalEulerAnglesOfHand(nonDomHandGO.transform);
+        return nonDomHandInputDirectionManager.GetLocalEulerAnglesOfHand();
     }
 
-    public Vector2 GetLocalVector2OfHand(Transform hand)
-    {
-        Vector2 localVector2 = new Vector2(hand.localPosition.x - body.transform.localPosition.x,
-            (hand.localPosition.y - body.transform.position.y) + bodyHandOffset) * localDistanceMultiplyer;
-        return localVector2;
-    }
+    
 
     public Vector2 GetLocalVector2OfDomHand()
     {
-        return GetLocalVector2OfHand(domHandGO.transform);
+        return domHandInputDirectionManager.GetLocalVector2OfHand();
     }
 
     public Vector2 GetLocalVector2OfNonDomHand()
     {
-        return GetLocalVector2OfHand(nonDomHandGO.transform);
+        return nonDomHandInputDirectionManager.GetLocalVector2OfHand();
     }
 
-    public InputDirection GetInputDirectionOfHand(InputDirection inputDirection)
+
+    public InputDirection GetInputDirectionOfDomHand()
     {
-        return inputDirection;
+        return domHandInputDirectionManager.GetInputDirectionOfHand();
     }
 
-    public Vector3 GetHandRigidbodyVelocity(Rigidbody handRB)
+    public InputDirection GetInputDirectionOfNonDomHand()
     {
-        return handRB.velocity;
+        return nonDomHandInputDirectionManager.GetInputDirectionOfHand();
     }
+
 
     public Vector3 GetDomHandRigidbodyVelocity()
     {
-        return GetHandRigidbodyVelocity(domHandRB);
+        return domHandInputDirectionManager.GetHandRigidbodyVelocity();
     }
 
     public Vector3 GetNonDomHandRigidbodyVelocity()
     {
-        return GetHandRigidbodyVelocity(nonDomHandRB);
+        return nonDomHandInputDirectionManager.GetHandRigidbodyVelocity();
     }
 
 

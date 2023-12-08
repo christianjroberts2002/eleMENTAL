@@ -42,46 +42,46 @@ public class HandCanvasManager : MonoBehaviour
 
     public void Update()
     {
-        SetHandDistanceText(domHandText, domHand.transform);
-        SetHandDistanceText(nonDomHandText, nonDomHand.transform);
+        SetHandDistanceText(domHandText, nonDomHandText);
 
-        SetLocalEulerAnglesText(domHandLocalEulerAnglesText, domHand.transform);
-        SetLocalEulerAnglesText(nonDomHandLocalEulerAnglesText, nonDomHand.transform);
+        SetLocalEulerAnglesText(domHandLocalEulerAnglesText, nonDomHandLocalEulerAnglesText);
 
-        SetInputPositionText(domInputPositionText, domHand.transform);
-        SetInputPositionText(nonDomInputPositionText, nonDomHand.transform);
+        SetInputPositionText(domInputPositionText, nonDomInputPositionText);
 
-        SetVector2Text(domHandVector2Text, domHand.transform);
-        SetVector2Text(nonDomHandVector2Text, nonDomHand.transform);
+        SetVector2Text(domHandVector2Text, nonDomHandVector2Text);
 
-        SetRBVelText(domHandRBVelText, domRB);
-        SetRBVelText(nonDomHandRBVelText, nonDomRB);
+        SetRBVelText(domHandRBVelText, nonDomHandRBVelText);
 
     }
 
-    private void SetHandDistanceText(TextMeshProUGUI distanceText, Transform hand)
+    private void SetHandDistanceText(TextMeshProUGUI domDistanceText, TextMeshProUGUI nonDomDistanceText)
     {
-        distanceText.text = MovementManager.instance.GetHandDistanceFromBody(hand).ToString("F1");
+        domDistanceText.text = MovementManager.instance.GetDomHandDistanceFromBody().ToString("F1");
+        nonDomDistanceText.text = MovementManager.instance.GetNonDomHandDistanceFromBody().ToString("F1");
     }
 
-    private void SetLocalEulerAnglesText(TextMeshProUGUI localEulerText, Transform hand)
+    private void SetLocalEulerAnglesText(TextMeshProUGUI domLocalEulerText, TextMeshProUGUI nonDomLocalEulerText)
     {
-        localEulerText.text = MovementManager.instance.GetLocalEulerAnglesOfHand(hand).ToString("000");
+        domLocalEulerText.text =  MovementManager.instance.GetLocalEulerAnglesOfDomHand().ToString("000");
+        nonDomLocalEulerText.text =  MovementManager.instance.GetLocalEulerAnglesOfNonDomHand().ToString("000");
     }
 
-    private void SetInputPositionText(TextMeshProUGUI inputPositiontext, Transform hand)
+    private void SetInputPositionText(TextMeshProUGUI domInputPositionText, TextMeshProUGUI nonDomInputPositionText)
     {
-        inputPositiontext.text = MovementManager.instance.GetInputDirectionOfHand(MovementManager.InputDirection.Left).ToString();
+        domInputPositionText.text = MovementManager.instance.GetInputDirectionOfDomHand().ToString();
+        nonDomInputPositionText.text = MovementManager.instance.GetInputDirectionOfNonDomHand().ToString();
     }
 
-    private void SetVector2Text(TextMeshProUGUI vector2PosText, Transform hand)
+    private void SetVector2Text(TextMeshProUGUI domVector2PosText, TextMeshProUGUI nonDomVector2PosText)
     {
-        vector2PosText.text = MovementManager.instance.GetLocalVector2OfHand(hand.transform).ToString("00.0");
+        domVector2PosText.text = MovementManager.instance.GetLocalVector2OfDomHand().ToString("F1");
+        nonDomVector2PosText.text = MovementManager.instance.GetLocalVector2OfNonDomHand().ToString("F1");
     }
 
-    private void SetRBVelText(TextMeshProUGUI rbVelText, Rigidbody handRB)
+    private void SetRBVelText(TextMeshProUGUI domRbVelText, TextMeshProUGUI nonDomRbVelText)
     {
-        rbVelText.text = MovementManager.instance.GetHandRigidbodyVelocity(handRB).ToString("0.0");
+        domRbVelText.text = MovementManager.instance.GetDomHandRigidbodyVelocity().ToString("0.0");
+        nonDomRbVelText.text = MovementManager.instance.GetNonDomHandRigidbodyVelocity().ToString("0.0");
     }
 
 
