@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class HandInputDirection : MonoBehaviour
 {
+
+
     //Variables
     private float distanceMultiplyer = 10;
     private float localDistanceMultiplyer = 10;
 
     private float bodyHandOffset = .4f;
+    //Neutral Bounds
+    [SerializeField] private float xBound = 2f;
+    [SerializeField] private float yBound = 2f;  
 
     //GameObjects
     [SerializeField] private Transform handTransform;
@@ -36,6 +41,11 @@ public class HandInputDirection : MonoBehaviour
         handRigidbody = GetComponent<Rigidbody>();  
         handTransform = gameObject.transform;
         body = MovementManager.instance.GetBodyObject();
+    }
+
+    private void Update()
+    {
+        SetInputDirection();
     }
 
 
@@ -66,6 +76,45 @@ public class HandInputDirection : MonoBehaviour
     public Vector3 GetHandRigidbodyVelocity()
     {
         return handRigidbody.velocity;
+    }
+
+    private void SetInputDirection()
+    {
+        Vector2 handVector2Position = GetLocalVector2OfHand();
+        float handPositionX = handVector2Position.x;
+        float handPositionY = handVector2Position.y;
+
+        if(handPositionX < xBound && handPositionX > -xBound
+            && handPositionY < yBound && handPositionY > -yBound)
+        {
+            inputDirection = InputDirection.Neutral;
+            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+            return;
+        }
+
+        if(handPositionY > Mathf.Abs(handPositionX) & handPositionY > 0)
+        {
+            inputDirection = InputDirection.Up;
+            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+
+        }
+        else if(handPositionY > -Mathf.Abs(handPositionX) && handPositionY < 0)
+        {
+            inputDirection = InputDirection.Down;
+            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+
+        }
+        else if(handPositionX < 0 && handPositionY <= handPositionX)
+        {
+            inputDirection = InputDirection.Left;
+            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+        }
+        else if(handPositionX > 0 && handPositionY <= handPositionX)
+        {
+            inputDirection = InputDirection.Right;
+            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+        }
+        
     }
 
 }
