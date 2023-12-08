@@ -22,9 +22,15 @@ public class HandCanvasManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI domHandVector2Text;
     [SerializeField] private TextMeshProUGUI nonDomHandVector2Text;
 
+    [SerializeField] private TextMeshProUGUI domHandRBVelText;
+    [SerializeField] private TextMeshProUGUI nonDomHandRBVelText;
+
     //PlayerGameObject
     [SerializeField] private GameObject domHand;
     [SerializeField] private GameObject nonDomHand;
+
+    [SerializeField] private Rigidbody domRB;
+    [SerializeField] private Rigidbody nonDomRB;
 
 
 
@@ -48,6 +54,9 @@ public class HandCanvasManager : MonoBehaviour
         SetVector2Text(domHandVector2Text, domHand.transform);
         SetVector2Text(nonDomHandVector2Text, nonDomHand.transform);
 
+        SetRBVelText(domHandRBVelText, domRB);
+        SetRBVelText(nonDomHandRBVelText, nonDomRB);
+
     }
 
     private void SetHandDistanceText(TextMeshProUGUI distanceText, Transform hand)
@@ -70,11 +79,18 @@ public class HandCanvasManager : MonoBehaviour
         vector2PosText.text = MovementManager.instance.GetLocalVector2OfHand(hand.transform).ToString("00.0");
     }
 
+    private void SetRBVelText(TextMeshProUGUI rbVelText, Rigidbody handRB)
+    {
+        rbVelText.text = MovementManager.instance.GetHandRigidbodyVelocity(handRB).ToString("0.0");
+    }
+
 
     private void MovementManager_onDomHandSet(object sender, EventArgs e)
     {
         Debug.Log("2");
         SetHands();
+        domRB = domHand.GetComponent<Rigidbody>();
+        nonDomRB = nonDomHand.GetComponent<Rigidbody>();
 
         if (MovementManager.instance.GetDominantHandEnum() != MovementManager.Hands.RightHand)
         {
@@ -85,7 +101,7 @@ public class HandCanvasManager : MonoBehaviour
 
         }
 
-
+        
 
 
 

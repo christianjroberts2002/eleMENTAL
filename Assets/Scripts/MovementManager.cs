@@ -7,7 +7,9 @@ public class MovementManager : MonoBehaviour
 {
     //Variables
     private float distanceMultiplyer = 10;
-    private float localDistanceMultiplyer = 100;
+    private float localDistanceMultiplyer = 10;
+
+    private float bodyHandOffset = .4f;
     //Instance
     public static MovementManager instance;
 
@@ -17,6 +19,11 @@ public class MovementManager : MonoBehaviour
     [SerializeField] private GameObject nonDomHandGO;
 
     [SerializeField] private GameObject body;
+
+    //RigidBodies
+
+    [SerializeField] private Rigidbody domHandRB;
+    [SerializeField] private Rigidbody nonDomHandRB;
 
     //Events
 
@@ -66,6 +73,9 @@ public class MovementManager : MonoBehaviour
             domHandGO = nonDomHandGO;
             nonDomHandGO = tempHand;
         }
+
+        domHandRB = domHandGO.GetComponent<Rigidbody>();
+        nonDomHandRB = domHandRB.GetComponent<Rigidbody>();
 
         onDomHandSet?.Invoke(this, EventArgs.Empty);
     }
@@ -119,7 +129,9 @@ public class MovementManager : MonoBehaviour
 
     public Vector2 GetLocalVector2OfHand(Transform hand)
     {
-        return (hand.localPosition - body.transform.localPosition) * localDistanceMultiplyer;
+        Vector2 localVector2 = new Vector2(hand.localPosition.x - body.transform.localPosition.x,
+            (hand.localPosition.y - body.transform.position.y) + bodyHandOffset) * localDistanceMultiplyer;
+        return localVector2;
     }
 
     public Vector2 GetLocalVector2OfDomHand()
@@ -136,5 +148,22 @@ public class MovementManager : MonoBehaviour
     {
         return inputDirection;
     }
+
+    public Vector3 GetHandRigidbodyVelocity(Rigidbody handRB)
+    {
+        return handRB.velocity;
+    }
+
+    public Vector3 GetDomHandRigidbodyVelocity()
+    {
+        return GetHandRigidbodyVelocity(domHandRB);
+    }
+
+    public Vector3 GetNonDomHandRigidbodyVelocity()
+    {
+        return GetHandRigidbodyVelocity(nonDomHandRB);
+    }
+
+
 
 }
