@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HandInputDirection : MonoBehaviour
@@ -11,6 +12,7 @@ public class HandInputDirection : MonoBehaviour
     private float localDistanceMultiplyer = 10;
 
     private float bodyHandOffset = 0;
+    private float bodyHandOffsetY = .4f;
     //Neutral Bounds
     [SerializeField] private float xBound = 5f;
     [SerializeField] private float yBound = 5f;
@@ -57,6 +59,7 @@ public class HandInputDirection : MonoBehaviour
         //Vector3 bodyDirection = body.transform.forward + new Vector3(0, 45, 0);
         Vector3 bodyDirection = body.transform.up;
 
+        Vector3 newBodyPosition = new Vector3(body.transform.position.x, body.transform.position.y + bodyHandOffsetY, body.transform.position.z );
 
 
 
@@ -68,15 +71,15 @@ public class HandInputDirection : MonoBehaviour
 
 
 
-        Vector3 testPosition = handTransform.position - (body.transform.position + projection);
-        Vector3 testPositionTwo = handTransform.position - (body.transform.position + projection);
+        Vector3 testPosition = handTransform.position - (newBodyPosition + projection);
+        Vector3 testPositionTwo = handTransform.position - (newBodyPosition + projection);
 
         //Vector3 handprojection = Vector3.ProjectOnPlane(testPosition, Vector3.forward);
 
         // Draw a ray from body position in the direction of the projection
-        Debug.DrawRay(body.transform.position, projection, Color.blue);
-        Debug.DrawRay(body.transform.position + projection, testPosition, Color.magenta);
-        Debug.DrawRay(body.transform.position + projection,  Vector3.up, Color.white);
+        Debug.DrawRay(newBodyPosition, projection, Color.blue);
+        Debug.DrawRay(newBodyPosition + projection, testPosition, Color.magenta);
+        Debug.DrawRay(newBodyPosition + projection, new Vector3(0, bodyHandOffsetY, 0), Color.white);
 
 
 
