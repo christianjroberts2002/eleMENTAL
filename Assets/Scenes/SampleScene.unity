@@ -196,6 +196,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4118300636229016767, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.00000011920929
+      objectReference: {fileID: 0}
+    - target: {fileID: 4118300636229016767, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.29200006
       objectReference: {fileID: 0}
@@ -221,6 +225,11 @@ Transform:
 --- !u!1 &155051109 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4118300636683223117, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
+  m_PrefabInstance: {fileID: 155051107}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &208703844 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 723744293398384563, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
   m_PrefabInstance: {fileID: 155051107}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &249499384
@@ -1492,7 +1501,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 742860962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.26, y: 3.338665, z: 0}
+  m_LocalPosition: {x: -8.7, y: 3.338665, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1538,7 +1547,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9ed58c102f1ae1458e39bbe42250ebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handTransform: {fileID: 0}
+  xBound: 0
+  yBound: 0
+  test: 10
+  handTransform: {fileID: 208703844}
   body: {fileID: 0}
   handRigidbody: {fileID: 0}
   inputDirection: 0
@@ -1546,6 +1558,11 @@ MonoBehaviour:
 Canvas:
   m_CorrespondingSourceObject: {fileID: 4703510101917912555, guid: fca8e06213f079b45aafcf41bb98e981, type: 3}
   m_PrefabInstance: {fileID: 4362648065306819311}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &981792423 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7908845203469075477, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
+  m_PrefabInstance: {fileID: 155051107}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1096718623 stripped
 MonoBehaviour:
@@ -2343,7 +2360,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9ed58c102f1ae1458e39bbe42250ebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handTransform: {fileID: 0}
+  xBound: 0
+  yBound: 0
+  test: 100
+  handTransform: {fileID: 981792423}
   body: {fileID: 0}
   handRigidbody: {fileID: 0}
   inputDirection: 3

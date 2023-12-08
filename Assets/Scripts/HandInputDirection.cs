@@ -10,10 +10,12 @@ public class HandInputDirection : MonoBehaviour
     private float distanceMultiplyer = 10;
     private float localDistanceMultiplyer = 10;
 
-    private float bodyHandOffset = .4f;
+    private float bodyHandOffset = 0;
     //Neutral Bounds
-    [SerializeField] private float xBound = 2f;
-    [SerializeField] private float yBound = 2f;  
+    [SerializeField] private float xBound = 5f;
+    [SerializeField] private float yBound = 5f;
+
+    [SerializeField] private float test = 10f;
 
     //GameObjects
     [SerializeField] private Transform handTransform;
@@ -39,13 +41,46 @@ public class HandInputDirection : MonoBehaviour
     private void Start()
     {
         handRigidbody = GetComponent<Rigidbody>();  
-        handTransform = gameObject.transform;
+        //handTransform = gameObject.transform;
         body = MovementManager.instance.GetBodyObject();
     }
 
     private void Update()
     {
         SetInputDirection();
+    }
+
+    private void LateUpdate()
+    {
+        RaycastHit hit;
+        Vector3 handPosition = handTransform.position - body.transform.position;
+        //Vector3 bodyDirection = body.transform.forward + new Vector3(0, 45, 0);
+        Vector3 bodyDirection = body.transform.up;
+
+
+
+
+        // Project handPosition onto the plane defined by bodyDirection
+        //Vector3 projection = Vector3.ProjectOnPlane(handPosition, bodyDirection);
+        Vector3 projection = Vector3.Project(handPosition, body.transform.forward);
+
+
+
+
+
+        Vector3 testPosition = handTransform.position - (body.transform.position + projection);
+        Vector3 testPositionTwo = handTransform.position - (body.transform.position + projection);
+
+        //Vector3 handprojection = Vector3.ProjectOnPlane(testPosition, Vector3.forward);
+
+        // Draw a ray from body position in the direction of the projection
+        Debug.DrawRay(body.transform.position, projection, Color.blue);
+        Debug.DrawRay(body.transform.position + projection, testPosition, Color.magenta);
+        Debug.DrawRay(body.transform.position + projection,  Vector3.up, Color.white);
+
+
+
+
     }
 
 
@@ -63,8 +98,8 @@ public class HandInputDirection : MonoBehaviour
 
     public Vector2 GetLocalVector2OfHand()
     {
-        Vector2 localVector2 = new Vector2(handTransform.localPosition.x - body.transform.localPosition.x,
-            (handTransform.localPosition.y - body.transform.position.y) + bodyHandOffset) * localDistanceMultiplyer;
+        Vector2 localVector2 = new Vector2(handTransform.position.x - body.transform.position.x,
+            (handTransform.position.y - body.transform.position.y) + bodyHandOffset) * localDistanceMultiplyer;
         return localVector2;
     }
 
@@ -83,8 +118,9 @@ public class HandInputDirection : MonoBehaviour
         Vector2 handVector2Position = GetLocalVector2OfHand();
         float handPositionX = handVector2Position.x;
         float handPositionY = handVector2Position.y;
+        
 
-        if(handPositionX < xBound && handPositionX > -xBound
+        if (handPositionX < xBound && handPositionX > -xBound
             && handPositionY < yBound && handPositionY > -yBound)
         {
             inputDirection = InputDirection.Neutral;
