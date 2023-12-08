@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class MovementManager : MonoBehaviour
 {
+    //Variables
+    private float distanceMultiplyer = 10;
+    private float localDistanceMultiplyer = 100;
     //Instance
     public static MovementManager instance;
 
@@ -28,9 +31,9 @@ public class MovementManager : MonoBehaviour
         LeftHand
     }
 
-    private Hands domHand;
+    [SerializeField] private Hands domHand;
 
-    public enum InputDirection
+    [SerializeField] public enum InputDirection
     {
         Neutral,
         Up,
@@ -39,7 +42,7 @@ public class MovementManager : MonoBehaviour
         Right
     }
 
-    private InputDirection inputDirection;  
+    [SerializeField] private InputDirection inputDirection;  
 
     public void Awake()
     {
@@ -84,8 +87,9 @@ public class MovementManager : MonoBehaviour
 
     public float GetHandDistanceFromBody(Transform hand)
     {
+        
         float distance = Vector3.Distance(body.transform.position, hand.position);
-        return distance;
+        return distance * distanceMultiplyer;
     }
 
     public float GetDomHandDistanceFromBody()
@@ -113,19 +117,19 @@ public class MovementManager : MonoBehaviour
         return GetLocalEulerAnglesOfHand(nonDomHandGO.transform);
     }
 
-    public Vector2 GetVector2OfHand(Transform hand)
+    public Vector2 GetLocalVector2OfHand(Transform hand)
     {
-        return hand.position;
+        return (hand.localPosition - body.transform.localPosition) * localDistanceMultiplyer;
     }
 
-    public Vector2 GetVector2OfDomHand()
+    public Vector2 GetLocalVector2OfDomHand()
     {
-        return GetVector2OfHand(domHandGO.transform);
+        return GetLocalVector2OfHand(domHandGO.transform);
     }
 
-    public Vector2 GetVector2OfNonDomHand()
+    public Vector2 GetLocalVector2OfNonDomHand()
     {
-        return GetVector2OfHand(nonDomHandGO.transform);
+        return GetLocalVector2OfHand(nonDomHandGO.transform);
     }
 
     public InputDirection GetInputDirectionOfHand(InputDirection inputDirection)

@@ -42,6 +42,12 @@ public class HandCanvasManager : MonoBehaviour
         SetLocalEulerAnglesText(domHandLocalEulerAnglesText, domHand.transform);
         SetLocalEulerAnglesText(nonDomHandLocalEulerAnglesText, nonDomHand.transform);
 
+        SetInputPositionText(domInputPositionText, domHand.transform);
+        SetInputPositionText(nonDomInputPositionText, nonDomHand.transform);
+
+        SetVector2Text(domHandVector2Text, domHand.transform);
+        SetVector2Text(nonDomHandVector2Text, nonDomHand.transform);
+
     }
 
     private void SetHandDistanceText(TextMeshProUGUI distanceText, Transform hand)
@@ -56,12 +62,12 @@ public class HandCanvasManager : MonoBehaviour
 
     private void SetInputPositionText(TextMeshProUGUI inputPositiontext, Transform hand)
     {
-        inputPositiontext.text = "Right";
+        inputPositiontext.text = MovementManager.instance.GetInputDirectionOfHand(MovementManager.InputDirection.Left).ToString();
     }
 
     private void SetVector2Text(TextMeshProUGUI vector2PosText, Transform hand)
     {
-        vector2PosText.text = "00,00,00";
+        vector2PosText.text = MovementManager.instance.GetLocalVector2OfHand(hand.transform).ToString("00.0");
     }
 
 
