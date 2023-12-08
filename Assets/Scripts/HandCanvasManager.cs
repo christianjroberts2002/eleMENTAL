@@ -25,13 +25,13 @@ public class HandCanvasManager : MonoBehaviour
     //PlayerGameObject
     [SerializeField] private GameObject domHand;
     [SerializeField] private GameObject nonDomHand;
-    
+
 
 
     private void Awake()
     {
         MovementManager.instance.onDomHandSet += MovementManager_onDomHandSet;
-        
+
     }
 
     public void Update()
@@ -41,14 +41,14 @@ public class HandCanvasManager : MonoBehaviour
 
         SetLocalEulerAnglesText(domHandLocalEulerAnglesText, domHand.transform);
         SetLocalEulerAnglesText(nonDomHandLocalEulerAnglesText, nonDomHand.transform);
-        
+
     }
 
     private void SetHandDistanceText(TextMeshProUGUI distanceText, Transform hand)
     {
         distanceText.text = MovementManager.instance.GetHandDistanceFromBody(hand).ToString("F1");
     }
-    
+
     private void SetLocalEulerAnglesText(TextMeshProUGUI localEulerText, Transform hand)
     {
         localEulerText.text = MovementManager.instance.GetLocalEulerAnglesOfHand(hand).ToString("000");
@@ -63,7 +63,7 @@ public class HandCanvasManager : MonoBehaviour
     {
         vector2PosText.text = "00,00,00";
     }
-    
+
 
     private void MovementManager_onDomHandSet(object sender, EventArgs e)
     {
@@ -79,10 +79,10 @@ public class HandCanvasManager : MonoBehaviour
 
         }
 
-        
-        
 
-        
+
+
+
     }
 
     private void SetHands()

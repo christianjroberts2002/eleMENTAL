@@ -208,6 +208,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4118300636142094298, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
   m_PrefabInstance: {fileID: 155051107}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &155051109 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4118300636683223117, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
+  m_PrefabInstance: {fileID: 155051107}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &249499384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1363,14 +1368,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79393676eba7a97498996514080fc04b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dominantHandGO: {fileID: 816452289}
-  nonDominantHandGO: {fileID: 1707186541}
-  HandGOList:
-  - {fileID: 816452289}
-  - {fileID: 1707186541}
-  body: {fileID: 868479415}
-  dominantHand: 0
-  gameInput: 0
+  domHandGO: {fileID: 816452289}
+  nonDomHandGO: {fileID: 1707186541}
+  body: {fileID: 155051109}
 --- !u!1 &816452289 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5605324563379077603, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
@@ -1380,11 +1380,6 @@ GameObject:
 Canvas:
   m_CorrespondingSourceObject: {fileID: 4703510101917912555, guid: fca8e06213f079b45aafcf41bb98e981, type: 3}
   m_PrefabInstance: {fileID: 4362648065306819311}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &868479415 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4118300636683223116, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
-  m_PrefabInstance: {fileID: 155051107}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1096718623 stripped
 MonoBehaviour:
