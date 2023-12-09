@@ -197,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4118300636229016767, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00000011920929
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4118300636229016767, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -209,10 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4118300636142094298, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1274266068}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2672504564392622155, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
       insertIndex: 1
@@ -1505,7 +1502,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 742860962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.7, y: 3.338665, z: -7.6}
+  m_LocalPosition: {x: 0, y: 2.86, z: -7.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1555,13 +1552,19 @@ MonoBehaviour:
   yBound: 0
   test: 10
   handTransform: {fileID: 208703844}
-  body: {fileID: 0}
+  body: {fileID: 902776390}
+  debugObjectPrefab: {fileID: 7386555226745610388, guid: 94da9d8606fe3f34da9f93a19020c9db, type: 3}
   handRigidbody: {fileID: 0}
   inputDirection: 0
 --- !u!223 &868069245 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 4703510101917912555, guid: fca8e06213f079b45aafcf41bb98e981, type: 3}
   m_PrefabInstance: {fileID: 4362648065306819311}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &902776390 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4118300635981618678, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
+  m_PrefabInstance: {fileID: 155051107}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &981792423 stripped
 Transform:
@@ -1870,37 +1873,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10, y: 2.220446e-16, z: 10}
   m_Center: {x: 0, y: -0.5, z: 0}
---- !u!1 &1274266067
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1274266068}
-  m_Layer: 8
-  m_Name: Debug Object
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1274266068
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274266067}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.702, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 155051108}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1334127034 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1906029148737076879, guid: fca8e06213f079b45aafcf41bb98e981, type: 3}
@@ -2368,7 +2340,8 @@ MonoBehaviour:
   yBound: 0
   test: 100
   handTransform: {fileID: 981792423}
-  body: {fileID: 0}
+  body: {fileID: 902776390}
+  debugObjectPrefab: {fileID: 7386555226745610388, guid: 94da9d8606fe3f34da9f93a19020c9db, type: 3}
   handRigidbody: {fileID: 0}
   inputDirection: 3
 --- !u!1 &1714737824 stripped

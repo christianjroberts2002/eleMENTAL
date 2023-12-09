@@ -24,6 +24,12 @@ public class HandInputDirection : MonoBehaviour
      
     [SerializeField] private GameObject body;
 
+    private GameObject debugObjectA;
+    private GameObject debugObjectB;
+    private GameObject debugObjectC;
+
+    [SerializeField] private GameObject debugObjectPrefab;
+
     //RigidBodies
 
     [SerializeField] private Rigidbody handRigidbody;
@@ -45,6 +51,10 @@ public class HandInputDirection : MonoBehaviour
         handRigidbody = GetComponent<Rigidbody>();  
         //handTransform = gameObject.transform;
         body = MovementManager.instance.GetBodyObject();
+
+        debugObjectA = Instantiate(debugObjectPrefab, transform);
+        debugObjectB = Instantiate(debugObjectPrefab, transform);
+        debugObjectC = Instantiate(debugObjectPrefab, transform);
     }
 
     private void Update()
@@ -52,36 +62,29 @@ public class HandInputDirection : MonoBehaviour
         SetInputDirection();
     }
 
+   
+
     private void LateUpdate()
     {
-        RaycastHit hit;
-        Vector3 handPosition = handTransform.position - body.transform.position;
-        //Vector3 bodyDirection = body.transform.forward + new Vector3(0, 45, 0);
-        Vector3 bodyDirection = body.transform.up;
+        
+        Vector3 newBodyPositionWithYOffset = new Vector3(body.transform.position.x, body.transform.position.y + bodyHandOffsetY, body.transform.position.z);
 
-        Vector3 newBodyPosition = new Vector3(body.transform.position.x, body.transform.position.y + bodyHandOffsetY, body.transform.position.z );
+        Vector3 handPosition = handTransform.position - newBodyPositionWithYOffset;
 
+        Vector3 bodyDirection = body.transform.forward;
 
+        Vector3 projection = Vector3.Project(handPosition, bodyDirection);
 
-        // Project handPosition onto the plane defined by bodyDirection
-        //Vector3 projection = Vector3.ProjectOnPlane(handPosition, bodyDirection);
-        Vector3 projection = Vector3.Project(handPosition, body.transform.forward);
+        Vector3 DistanceToHandFromPlaneProjection = handTransform.position - (newBodyPositionWithYOffset + projection);
 
-
-
-
-
-        Vector3 testPosition = handTransform.position - (newBodyPosition + projection);
-        Vector3 testPositionTwo = handTransform.position - (newBodyPosition + projection);
-
-        //Vector3 handprojection = Vector3.ProjectOnPlane(testPosition, Vector3.forward);
-
-        // Draw a ray from body position in the direction of the projection
-        Debug.DrawRay(newBodyPosition, projection, Color.blue);
-        Debug.DrawRay(newBodyPosition + projection, testPosition, Color.magenta);
-        Debug.DrawRay(newBodyPosition + projection, new Vector3(0, bodyHandOffsetY, 0), Color.white);
+        Debug.DrawRay(newBodyPositionWithYOffset, projection, Color.blue);
+        Debug.DrawRay(newBodyPositionWithYOffset + projection, DistanceToHandFromPlaneProjection, Color.magenta);
+        Debug.DrawRay(newBodyPositionWithYOffset + projection, Vector3.up * bodyHandOffsetY, Color.white);
 
 
+        debugObjectA.transform.position = newBodyPositionWithYOffset + projection;
+        debugObjectB.transform.position = newBodyPositionWithYOffset + projection + newBodyPositionWithYOffset + projection;
+        debugObjectC.transform.position = handTransform.position;
 
 
     }
