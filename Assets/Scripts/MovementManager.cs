@@ -60,6 +60,9 @@ public class MovementManager : MonoBehaviour
 
     public void Start()
     {
+        //Fixes a bug??
+        body.transform.rotation = Quaternion.identity;
+
         if(domHand != Hands.RightHand)
         {
             GameObject tempHand = domHandGO;

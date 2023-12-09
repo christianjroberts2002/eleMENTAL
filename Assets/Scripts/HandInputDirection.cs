@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static RayFire.RayfireBomb;
 
 public class HandInputDirection : MonoBehaviour
 {
@@ -27,6 +28,15 @@ public class HandInputDirection : MonoBehaviour
     private GameObject debugObjectA;
     private GameObject debugObjectB;
     private GameObject debugObjectC;
+    // Projection Triangle
+
+    //Vectors
+    private Vector3 angleAVector;
+    private Vector3 angleBVector;
+    private Vector3 angleCVector;
+
+    //Angle
+    private float angleCFloat;
 
     [SerializeField] private GameObject debugObjectPrefab;
 
@@ -59,14 +69,22 @@ public class HandInputDirection : MonoBehaviour
 
     private void Update()
     {
-        SetInputDirection();
+        //SetInputDirection();
     }
 
    
 
     private void LateUpdate()
     {
-        
+
+        MakeTriangleForInputCalculation();
+        GetAngleFromProjectionTriangle();
+
+
+    }
+
+    private void MakeTriangleForInputCalculation()
+    {
         Vector3 newBodyPositionWithYOffset = new Vector3(body.transform.position.x, body.transform.position.y + bodyHandOffsetY, body.transform.position.z);
 
         Vector3 handPosition = handTransform.position - newBodyPositionWithYOffset;
@@ -81,12 +99,35 @@ public class HandInputDirection : MonoBehaviour
         Debug.DrawRay(newBodyPositionWithYOffset + projection, DistanceToHandFromPlaneProjection, Color.magenta);
         Debug.DrawRay(newBodyPositionWithYOffset + projection, Vector3.up * bodyHandOffsetY, Color.white);
 
+        //GetAngleVectors
+        angleAVector = handTransform.position;
+        angleBVector = newBodyPositionWithYOffset + projection + new Vector3(0, bodyHandOffsetY, 0);
+        angleCVector = newBodyPositionWithYOffset + projection;
 
-        debugObjectA.transform.position = newBodyPositionWithYOffset + projection;
-        debugObjectB.transform.position = newBodyPositionWithYOffset + projection + newBodyPositionWithYOffset + projection;
-        debugObjectC.transform.position = handTransform.position;
+        //DebugObjects
+        debugObjectA.transform.position = angleAVector;
+        debugObjectB.transform.position = angleBVector;
+        debugObjectC.transform.position = angleCVector;
+    }
+
+    private void GetAngleFromProjectionTriangle()
+    {
+        float sideA = Vector3.Distance(angleCVector, angleBVector);
+        //Debug.Log(sideA);
+        float sideB = Vector3.Distance(angleCVector, angleAVector);
+        //Debug.Log(sideB);
+        float sideC = Vector3.Distance(angleAVector, angleBVector);
+        //Debug.Log(sideC);
+
+        //Direction
+        Vector3 newBodyPositionWithYOffset = new Vector3(body.transform.position.x, body.transform.position.y + bodyHandOffsetY, body.transform.position.z);
+        Vector3 direction = handTransform.position - newBodyPositionWithYOffset;
+        //angleCFloat = sideA + sideB - Mathf.Sqrt(2 * (sideA) * (sideB) * Mathf.Cos(sideC));
+        angleCFloat = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
 
 
+
+        Debug.Log(gameObject.name + " angle is: " + angleCFloat);
     }
 
 
