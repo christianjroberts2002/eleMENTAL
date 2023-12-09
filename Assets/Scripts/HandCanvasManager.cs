@@ -25,6 +25,18 @@ public class HandCanvasManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI domHandRBVelText;
     [SerializeField] private TextMeshProUGUI nonDomHandRBVelText;
 
+    [SerializeField] private TextMeshProUGUI domSideAText;
+    [SerializeField] private TextMeshProUGUI nonDomSideAText;
+
+    [SerializeField] private TextMeshProUGUI domHandSideBText;
+    [SerializeField] private TextMeshProUGUI nonDomHandSideBText;
+
+    [SerializeField] private TextMeshProUGUI domHandSideCText;
+    [SerializeField] private TextMeshProUGUI nonDomHandSideCText;
+
+    [SerializeField] private TextMeshProUGUI domHandAngleCText;
+    [SerializeField] private TextMeshProUGUI nonDomHandAngleCText;
+
     //PlayerGameObject
     [SerializeField] private GameObject domHand;
     [SerializeField] private GameObject nonDomHand;
@@ -51,6 +63,15 @@ public class HandCanvasManager : MonoBehaviour
         SetVector2Text(domHandVector2Text, nonDomHandVector2Text);
 
         SetRBVelText(domHandRBVelText, nonDomHandRBVelText);
+
+        SetSideAText(domSideAText, nonDomSideAText);
+
+        SetSideBText(domHandSideBText, nonDomHandSideBText);
+
+        SetSideCText(domHandSideCText, nonDomHandSideCText);
+
+        SetAngleCText(domHandAngleCText, nonDomHandAngleCText);
+
 
     }
 
@@ -82,6 +103,31 @@ public class HandCanvasManager : MonoBehaviour
     {
         domRbVelText.text = MovementManager.instance.GetDomHandRigidbodyVelocity().ToString("0.0");
         nonDomRbVelText.text = MovementManager.instance.GetNonDomHandRigidbodyVelocity().ToString("0.0");
+    }
+
+    private void SetSideAText(TextMeshProUGUI domSideAText, TextMeshProUGUI nonDomSideAText)
+    {
+
+        domSideAText.text = MovementManager.instance.GetDomHandSideA().ToString();
+        nonDomSideAText.text = MovementManager.instance.GetNonDomHandSideA().ToString();
+    }
+
+    private void SetSideBText(TextMeshProUGUI domSideBText, TextMeshProUGUI nonDomSideBText)
+    {
+        domSideBText.text = MovementManager.instance.GetDomHandSideB().ToString();
+        nonDomSideBText.text = MovementManager.instance.GetNonDomHandSideB().ToString();
+    }
+
+    private void SetSideCText(TextMeshProUGUI domSideCText, TextMeshProUGUI nonDomSideCText)
+    {
+        domSideCText.text = MovementManager.instance.GetDomHandSideC().ToString();
+        nonDomSideCText.text = MovementManager.instance.GetNonDomHandSideC().ToString();
+    }
+
+    private void SetAngleCText(TextMeshProUGUI domAngleCText, TextMeshProUGUI nonDomAngleCText)
+    {
+        domAngleCText.text = MovementManager.instance.GetDomHandAngleC().ToString();
+        nonDomAngleCText.text = MovementManager.instance.GetNonDomHandAngleC().ToString();
     }
 
 

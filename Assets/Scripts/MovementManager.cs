@@ -159,6 +159,46 @@ public class MovementManager : MonoBehaviour
         return nonDomHandInputDirectionManager.GetHandRigidbodyVelocity();
     }
 
+    public float GetDomHandSideA()
+    {
+        return domHandInputDirectionManager.GetSideA();
+    }
+
+    public float GetNonDomHandSideA()
+    {
+        return nonDomHandInputDirectionManager.GetSideA();
+    }
+
+    public float GetDomHandSideB()
+    {
+        return domHandInputDirectionManager.GetSideB();
+    }
+
+    public float GetNonDomHandSideB()
+    {
+        return nonDomHandInputDirectionManager.GetSideB();
+    }
+
+    public float GetDomHandSideC()
+    {
+        return domHandInputDirectionManager.GetSideC();
+    }
+
+    public float GetNonDomHandSideC()
+    {
+        return nonDomHandInputDirectionManager.GetSideC();
+    }
+
+    public float GetDomHandAngleC()
+    {
+        return domHandInputDirectionManager.GetAngleC();
+    }
+
+    public float GetNonDomHandAngleC()
+    {
+        return nonDomHandInputDirectionManager.GetAngleC();
+    }
+
 
 
 }
