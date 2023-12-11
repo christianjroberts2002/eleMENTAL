@@ -1,5 +1,6 @@
 ﻿using System;
 using HurricaneVR.Framework.Shared;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 #if ENABLE_INPUT_SYSTEM
@@ -84,6 +85,22 @@ namespace HurricaneVR.Framework.ControllerInput
 
         public HVRController TeleportController => TeleportHandSide == HVRHandSide.Left ? HVRInputManager.Instance.LeftController : HVRInputManager.Instance.RightController;
 
+        public static HVRPlayerInputs Instance;
+
+
+        private void Start()
+        {
+            if(Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+
+
+        }
         public void Update()
         {
             UpdateInput();

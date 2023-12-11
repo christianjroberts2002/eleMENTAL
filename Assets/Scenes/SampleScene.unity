@@ -2448,6 +2448,7 @@ GameObject:
   m_Component:
   - component: {fileID: 742860963}
   - component: {fileID: 742860964}
+  - component: {fileID: 742860965}
   m_Layer: 0
   m_Name: Hurricane VR
   m_TagString: Untagged
@@ -2489,9 +2490,21 @@ MonoBehaviour:
   body: {fileID: 155051109}
   domHandRB: {fileID: 0}
   nonDomHandRB: {fileID: 0}
-  domHand: 0
+  domHand: 1
   domHandInputDirectionManager: {fileID: 0}
   nonDomHandInputDirectionManager: {fileID: 0}
+--- !u!114 &742860965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742860962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0918bb1392e8bc245a458bf1079bb1a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &772654782 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 260612553091958366, guid: 9afd0aaef752a1349bbfe386058118df, type: 3}
@@ -6064,7 +6077,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4799324139639884195, guid: fca8e06213f079b45aafcf41bb98e981, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.08868916
+      value: 0.08868915
       objectReference: {fileID: 0}
     - target: {fileID: 4799324139639884195, guid: fca8e06213f079b45aafcf41bb98e981, type: 3}
       propertyPath: m_LocalRotation.w

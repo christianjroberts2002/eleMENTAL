@@ -15,7 +15,7 @@ public class HandInputDirection : MonoBehaviour
     private float localDistanceMultiplyer = 10;
 
     private float bodyHandOffset = 0;
-    private float bodyHandOffsetY = .4f;
+    private float bodyHandOffsetY = .6f;
     //Neutral Bounds
     [SerializeField] private float xBound = 5f;
     [SerializeField] private float yBound = 5f;
@@ -57,8 +57,8 @@ public class HandInputDirection : MonoBehaviour
         Neutral,
         Up,
         Down,
-        NonDom,
-        Dom
+        NonDomSide,
+        DomSide
     }
 
     [SerializeField] private InputDirection inputDirection;
@@ -78,7 +78,7 @@ public class HandInputDirection : MonoBehaviour
 
     private void Update()
     {
-        //SetInputDirection();
+        
         
     }
 
@@ -89,6 +89,7 @@ public class HandInputDirection : MonoBehaviour
 
         MakeTriangleForInputCalculation();
         angleCFloat = GetAngleDirAs360();
+        SetInputDirection();
         
         
 
@@ -260,36 +261,39 @@ public class HandInputDirection : MonoBehaviour
         float inputAngle = angleCFloat;
         
 
-        if (sideB < 2)
+        if (sideB < .175)
         {
             inputDirection = InputDirection.Neutral;
             Debug.Log(gameObject.name + " is " + inputDirection.ToString());
             return;
         }
+        //UP
+        if (inputAngle > 315 || inputAngle < 45)
+        {
+            inputDirection = InputDirection.Up;
+            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
 
-        //if(0 == 0)
-        //{
-        //    inputDirection = InputDirection.Up;
-        //    Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+        }
+        //Down
+        else if (inputAngle < 225 && inputAngle > 135)
+        {
+            inputDirection = InputDirection.Down;
+            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
 
-        //}
-        //else if(0 == 0)
-        //{
-        //    inputDirection = InputDirection.Down;
-        //    Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+        }
+        //NonDomSide
+        else if (inputAngle >= 225 && inputAngle <= 315)
+        {
+            inputDirection = InputDirection.NonDomSide;
+            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+        }
+        //DomSide
+        else if (inputAngle >= 45 && inputAngle <= 135)
+        {
+            inputDirection = InputDirection.DomSide;
+            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+        }
 
-        //}
-        //else if(0 == 0)
-        //{
-        //    inputDirection = InputDirection.Left;
-        //    Debug.Log(gameObject.name + " is " + inputDirection.ToString());
-        //}
-        //else if(0 == 0)
-        //{
-        //    inputDirection = InputDirection.Right;
-        //    Debug.Log(gameObject.name + " is " + inputDirection.ToString());
-        //}
-        
     }
 
 }
