@@ -30,6 +30,10 @@ namespace HexabodyVR.PlayerController
 
         void Start()
         {
+
+            //Fix Rotaiton Bug?? - Christian
+            gameObject.transform.rotation = Quaternion.Euler(transform.forward);
+
             _previousTrackingSpace = TrackingSpace;
 
             Setup();

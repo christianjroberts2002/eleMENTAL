@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
+using UnityEngine.XR;
 using static RayFire.RayfireBomb;
 
 public class HandInputDirection : MonoBehaviour
@@ -55,8 +57,8 @@ public class HandInputDirection : MonoBehaviour
         Neutral,
         Up,
         Down,
-        Left,
-        Right
+        NonDom,
+        Dom
     }
 
     [SerializeField] private InputDirection inputDirection;
@@ -70,11 +72,14 @@ public class HandInputDirection : MonoBehaviour
         debugObjectA = Instantiate(debugObjectPrefab, transform);
         debugObjectB = Instantiate(debugObjectPrefab, transform);
         debugObjectC = Instantiate(debugObjectPrefab, transform);
+
+         
     }
 
     private void Update()
     {
         //SetInputDirection();
+        
     }
 
    
@@ -83,8 +88,9 @@ public class HandInputDirection : MonoBehaviour
     {
 
         MakeTriangleForInputCalculation();
-        GetAngleFromProjectionTriangle();
-
+        angleCFloat = GetAngleDirAs360();
+        
+        
 
     }
 
@@ -115,7 +121,7 @@ public class HandInputDirection : MonoBehaviour
         debugObjectC.transform.position = angleCVector;
     }
 
-    private void GetAngleFromProjectionTriangle()
+    private float GetAngleFromProjectionTriangle()
     {
         sideA = Vector3.Distance(angleCVector, angleBVector);
         //Debug.Log(sideA);
@@ -126,11 +132,76 @@ public class HandInputDirection : MonoBehaviour
 
         float cosC = (Mathf.Pow(sideA, 2) + Mathf.Pow(sideB, 2) - Mathf.Pow(sideC, 2)) / (2 * sideA * sideB);
         angleCFloat = Mathf.Acos(cosC) * 180/Mathf.PI;
+        return angleCFloat;
 
 
 
+        
+    }
 
-        Debug.Log(gameObject.name + " angle is: " + angleCFloat);
+    private float AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up)
+    {
+        Vector3 perp = Vector3.Cross(fwd, targetDir);
+        float dir = Vector3.Dot(perp, up);
+
+        if(MovementManager.instance.GetDominantHandEnum() == MovementManager.Hands.LeftHand)
+        {
+            if (dir > 0f)
+            {
+                return 1f;
+            }
+            else if (dir < 0f)
+            {
+                return -1f;
+            }
+            else
+            {
+                return 0f;
+            }
+        }else if(MovementManager.instance.GetDominantHandEnum() == MovementManager.Hands.RightHand)
+        {
+            if (dir > 0f)
+            {
+                return -1f;
+            }
+            else if (dir < 0f)
+            {
+                return 1f;
+            }
+            else
+            {
+                return 0f;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+        
+    }
+    private float GetAngleDirAs360()
+    {
+        Vector3 headingDir = debugObjectC.transform.position - debugObjectA.transform.position;
+        float sideOfBodyFloat = AngleDir(body.transform.forward, headingDir, transform.up);
+        float handAngle360Degrees = GetAngleFromProjectionTriangle();
+        if (sideOfBodyFloat > 0f)
+        {
+            handAngle360Degrees = GetAngleFromProjectionTriangle();
+
+        }
+        else if(sideOfBodyFloat < 0f)
+        {
+           handAngle360Degrees = 180 + (Mathf.Abs(180 - handAngle360Degrees));
+            
+        }
+        else
+        {
+            return 0;
+        }
+
+        return handAngle360Degrees;
+
+        
     }
 
 
@@ -196,28 +267,28 @@ public class HandInputDirection : MonoBehaviour
             return;
         }
 
-        if(0 == 0)
-        {
-            inputDirection = InputDirection.Up;
-            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+        //if(0 == 0)
+        //{
+        //    inputDirection = InputDirection.Up;
+        //    Debug.Log(gameObject.name + " is " + inputDirection.ToString());
 
-        }
-        else if(0 == 0)
-        {
-            inputDirection = InputDirection.Down;
-            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+        //}
+        //else if(0 == 0)
+        //{
+        //    inputDirection = InputDirection.Down;
+        //    Debug.Log(gameObject.name + " is " + inputDirection.ToString());
 
-        }
-        else if(0 == 0)
-        {
-            inputDirection = InputDirection.Left;
-            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
-        }
-        else if(0 == 0)
-        {
-            inputDirection = InputDirection.Right;
-            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
-        }
+        //}
+        //else if(0 == 0)
+        //{
+        //    inputDirection = InputDirection.Left;
+        //    Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+        //}
+        //else if(0 == 0)
+        //{
+        //    inputDirection = InputDirection.Right;
+        //    Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+        //}
         
     }
 

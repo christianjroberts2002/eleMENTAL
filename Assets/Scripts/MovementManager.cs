@@ -60,8 +60,7 @@ public class MovementManager : MonoBehaviour
 
     public void Start()
     {
-        //Fixes a bug??
-        body.transform.rotation = Quaternion.identity;
+        
 
         if(domHand != Hands.RightHand)
         {
@@ -77,6 +76,9 @@ public class MovementManager : MonoBehaviour
         nonDomHandInputDirectionManager = nonDomHandGO.GetComponent<HandInputDirection>();
         Debug.Log("1");
         onDomHandSet?.Invoke(this, EventArgs.Empty);
+
+        //Fixes a bug??
+        body.transform.rotation = Quaternion.identity;
 
 
     }
