@@ -10,6 +10,14 @@ public class InputManager : MonoBehaviour
     [SerializeField] GameObject domHandGo;
     [SerializeField] GameObject nonDomHandGo;
 
+    //Hand Spawn Point
+    [SerializeField] Transform domSpawn;
+    [SerializeField] Transform nonDomSpawn;
+
+    //Right and Left Reference
+    [SerializeField] Transform rightSpawn;
+    [SerializeField] Transform leftSpawn;
+
     //Hand Inputs
     private HandInputScript domHandInputScript;
     private HandInputScript nonDomHandInputScript;
@@ -37,6 +45,9 @@ public class InputManager : MonoBehaviour
 
         domHandInputScript = domHandGo.GetComponent<HandInputScript>();
         nonDomHandInputScript = nonDomHandGo.GetComponent<HandInputScript>();
+
+        //SetTheSpawnPoints
+        SetSpawnPoints();
 
         //DomA
         domHandInputScript.onPerformingActionDomA += domHandInputScript_onPerformingActionDomA;
@@ -71,6 +82,19 @@ public class InputManager : MonoBehaviour
 
     }
 
+    private void SetSpawnPoints()
+    {
+        if(movementManager.GetDominantHandEnum() == MovementManager.Hands.RightHand)
+        {
+            domSpawn = rightSpawn;
+            nonDomSpawn = leftSpawn;
+        }else
+        {
+            domSpawn = leftSpawn;
+            nonDomSpawn = rightSpawn;
+        }
+    }
+
     private void nonDomHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
     {
         throw new NotImplementedException();
@@ -78,7 +102,7 @@ public class InputManager : MonoBehaviour
 
     private void nonDomHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
     {
-        currentActionScript.ActionNeutralA(nonDomHandGo.transform, Quaternion.Euler(nonDomHandGo.transform.rotation * new Vector3(0,180,0)));
+        currentActionScript.ActionNeutralA(nonDomSpawn);
     }
 
     private void domHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
@@ -88,7 +112,7 @@ public class InputManager : MonoBehaviour
 
     private void domHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
     {
-        currentActionScript.ActionNeutralA(domHandGo.transform, domHandGo.transform.rotation);
+        currentActionScript.ActionNeutralA(domSpawn);
     }
 
     private void nonDomHandInputScript_onPerformingActionDownB(object sender, EventArgs e)

@@ -27,7 +27,7 @@ public class FireMoveSet : ActionBaseScript
         throw new System.NotImplementedException();
     }
 
-    public override void ActionNeutralA(Transform handTransform, Quaternion handQuaternion)
+    public override void ActionNeutralA(Transform handTransform)
     {
        GameObject fireProjectile =  Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
        Destroy(fireProjectile, 2f);

@@ -57,7 +57,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FireIntensity: 8.6
+    - _FireIntensity: 38.75
     - _Smoothness: 1.26
     - __dirty: 0
     m_Colors: []

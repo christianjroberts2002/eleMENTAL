@@ -163,7 +163,7 @@ public class HandInputScript : MonoBehaviour
             }
         }
 
-        Debug.Log(handInput.ToString());
+        
 
     }
 

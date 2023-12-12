@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class ActionBaseScript : MonoBehaviour
 {
 
-    public abstract void ActionNeutralA(Transform handTransform, Quaternion handQuaternion);
+    public abstract void ActionNeutralA(Transform handTransform);
     public abstract void ActionNeutralB();
 
     public abstract void ActionUpA();
