@@ -78,7 +78,7 @@ public class InputManager : MonoBehaviour
 
     private void nonDomHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
     {
-        currentActionScript.ActionNeutralA(nonDomHandGo.transform);
+        currentActionScript.ActionNeutralA(nonDomHandGo.transform, Quaternion.Euler(nonDomHandGo.transform.rotation * new Vector3(0,180,0)));
     }
 
     private void domHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
@@ -88,7 +88,7 @@ public class InputManager : MonoBehaviour
 
     private void domHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
     {
-        currentActionScript.ActionNeutralA(domHandGo.transform);
+        currentActionScript.ActionNeutralA(domHandGo.transform, domHandGo.transform.rotation);
     }
 
     private void nonDomHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
