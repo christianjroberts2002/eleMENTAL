@@ -264,34 +264,29 @@ public class HandInputDirection : MonoBehaviour
         if (sideB < .175)
         {
             inputDirection = InputDirection.Neutral;
-            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
             return;
         }
         //UP
         if (inputAngle > 315 || inputAngle < 45)
         {
             inputDirection = InputDirection.Up;
-            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
 
         }
         //Down
         else if (inputAngle < 225 && inputAngle > 135)
         {
-            inputDirection = InputDirection.Down;
-            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
+            inputDirection = InputDirection.Down;         
 
         }
         //NonDomSide
         else if (inputAngle >= 225 && inputAngle <= 315)
         {
             inputDirection = InputDirection.NonDomSide;
-            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
         }
         //DomSide
         else if (inputAngle >= 45 && inputAngle <= 135)
         {
             inputDirection = InputDirection.DomSide;
-            Debug.Log(gameObject.name + " is " + inputDirection.ToString());
         }
 
     }
