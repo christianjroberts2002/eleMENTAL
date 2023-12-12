@@ -56,13 +56,8 @@ public class MovementManager : MonoBehaviour
         }
 
 
-    }
 
-    public void Start()
-    {
-        
-
-        if(domHand != Hands.RightHand)
+        if (domHand != Hands.RightHand)
         {
             GameObject tempHand = domHandGO;
             domHandGO = nonDomHandGO;
@@ -76,6 +71,11 @@ public class MovementManager : MonoBehaviour
         nonDomHandInputDirectionManager = nonDomHandGO.GetComponent<HandInputDirection>();
         Debug.Log("1");
         onDomHandSet?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void Start()
+    {
+        
 
         //Fixes a bug??
         body.transform.rotation = Quaternion.identity;

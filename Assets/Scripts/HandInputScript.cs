@@ -10,24 +10,24 @@ public class HandInputScript : MonoBehaviour
     [SerializeField] private bool isPerformingAction;
 
     //"Right" Dom
-    public static event EventHandler onPerformingActionDomA;
-    public static event EventHandler onPerformingActionDomB;
+    public event EventHandler onPerformingActionDomA;
+    public event EventHandler onPerformingActionDomB;
 
     //"Left" nonDom
-    public static event EventHandler onPerformingActionNonDomA;
-    public static event EventHandler onPerformingActionNonDomB;
+    public event EventHandler onPerformingActionNonDomA;
+    public event EventHandler onPerformingActionNonDomB;
 
     //Up
-    public static event EventHandler onPerformingActionUpA;
-    public static event EventHandler onPerformingActionUpB;
+    public event EventHandler onPerformingActionUpA;
+    public event EventHandler onPerformingActionUpB;
 
     //Down
-    public static event EventHandler onPerformingActionDownA;
-    public static event EventHandler onPerformingActionDownB;
+    public event EventHandler onPerformingActionDownA;
+    public event EventHandler onPerformingActionDownB;
 
     //Neutral
-    public static event EventHandler onPerformingActionNeutralA;
-    public static event EventHandler onPerformingActionNeutralB;
+    public event EventHandler onPerformingActionNeutralA;
+    public event EventHandler onPerformingActionNeutralB;
 
     //booleans
     [SerializeField] private bool thisHandTriggerIsActivated;
@@ -107,6 +107,7 @@ public class HandInputScript : MonoBehaviour
             if(thisHandTriggerIsActivated)
             {
                 handInput = HandInput.NeutralA;
+                onPerformingActionNeutralA?.Invoke(this, EventArgs.Empty);
 
             }
             else if(thisHandGrabisActivated)

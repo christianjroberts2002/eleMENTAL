@@ -2470,6 +2470,10 @@ GameObject:
   - component: {fileID: 742860963}
   - component: {fileID: 742860964}
   - component: {fileID: 742860965}
+  - component: {fileID: 742860969}
+  - component: {fileID: 742860968}
+  - component: {fileID: 742860967}
+  - component: {fileID: 742860966}
   m_Layer: 0
   m_Name: Hurricane VR
   m_TagString: Untagged
@@ -2524,6 +2528,61 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0918bb1392e8bc245a458bf1079bb1a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  domHandGo: {fileID: 0}
+  nonDomHandGo: {fileID: 0}
+  actionBaseScripts:
+  - {fileID: 742860967}
+  currentActionScript: {fileID: 0}
+--- !u!114 &742860966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742860962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3958802f941d601468e8e6a8faaf82d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &742860967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742860962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44680a762b2436340a596c4e5e9b6df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireProjectilePrefab: {fileID: 7995662533807356028, guid: 18628fdb200e7834a98c4d9b07b0c64a, type: 3}
+  fireProjectileSpawn: {fileID: 816452312}
+--- !u!114 &742860968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742860962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41aff0ffba2295843baac507698e1724, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &742860969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742860962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9e834174072ca342a0e2af144458786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &772654782 stripped
@@ -2692,6 +2751,11 @@ MonoBehaviour:
   debugObjectPrefab: {fileID: 7386555226745610388, guid: 94da9d8606fe3f34da9f93a19020c9db, type: 3}
   handRigidbody: {fileID: 0}
   inputDirection: 0
+--- !u!4 &816452312 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5605324563379077600, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
+  m_PrefabInstance: {fileID: 155051107}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &816452319
 MonoBehaviour:
   m_ObjectHideFlags: 0
