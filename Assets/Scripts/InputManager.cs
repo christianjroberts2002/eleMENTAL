@@ -6,274 +6,49 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class InputManager : MonoBehaviour
+public abstract class InputManager : MonoBehaviour
 {
 
-    //Player RB
-    [SerializeField] Rigidbody playerRb;
-    //Hands
-    [SerializeField] GameObject domHandGo;
-    [SerializeField] GameObject nonDomHandGo;
+    public abstract void nonDomHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e);
 
-    //Hand Spawn Point
-    [SerializeField] Transform domSpawn;
-    [SerializeField] Transform nonDomSpawn;
+    public abstract void nonDomHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e);
 
-    //Right and Left Reference
-    [SerializeField] Transform rightSpawn;
-    [SerializeField] Transform leftSpawn;
+    public abstract void domHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e);
 
-    //Hand Inputs
-    private HandInputScript domHandInputScript;
-    private HandInputScript nonDomHandInputScript;
-
-    [SerializeField] ActionBaseScript[] actionBaseScripts;
-
-    [SerializeField] ActionBaseScript currentActionScript;
-
-    //speed
-    private float speedDom;
-    private float speedNonDom;
-
-    //Flying
-
-    [SerializeField] private float maxFlyHeight;
+    public abstract void domHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e);
 
 
-    //Movement Manager
-    private MovementManager movementManager;
-    public enum NatureType
-    {
-        Water,
-        Fire,
-        Ground,
-        Air
-    }
+    public abstract void nonDomHandInputScript_onPerformingActionDownB(object sender, EventArgs e);
 
-    private void Awake()
-    {
-        movementManager = MovementManager.instance;
-        domHandGo = movementManager.GetDominantHand();
-        nonDomHandGo = movementManager.GetNonDominantHand();
+    public abstract void nonDomHandInputScript_onPerformingActionDownA(object sender, EventArgs e);
 
-        //SetTheSpawnPoints
-        SetSpawnPoints();
+    public abstract void domHandInputScript_onPerformingActionDownB(object sender, EventArgs e);
 
-        domHandInputScript = domHandGo.GetComponent<HandInputScript>();
-        nonDomHandInputScript = nonDomHandGo.GetComponent<HandInputScript>();
+    public abstract void domHandInputScript_onPerformingActionDownA(object sender, EventArgs e);
 
-        
+    public abstract void nonDomHandInputScript_onPerformingActionUpB(object sender, EventArgs e);
 
-        //DomA
-        domHandInputScript.onPerformingActionDomA += domHandInputScript_onPerformingActionDomA;
-        domHandInputScript.onPerformingActionDomB += domHandInputScript_onPerformingActionDomB;
+    public abstract void nonDomHandInputScript_onPerformingActionUpA(object sender, EventArgs e);
 
-        nonDomHandInputScript.onPerformingActionDomA += nonDomHandInputScript_onPerformingActionDomA;
-        nonDomHandInputScript.onPerformingActionDomB += nonDomHandInputScript_onPerformingActionDomB;
-        //Non Dom
-        domHandInputScript.onPerformingActionNonDomA += domHandInputScript_onPerformingActionNonDomA;
-        domHandInputScript.onPerformingActionNonDomB += domHandInputScript_onPerformingActionNonDomB;
+    public abstract void domHandInputScript_onPerformingActionUpB(object sender, EventArgs e);
 
-        nonDomHandInputScript.onPerformingActionNonDomA += nonDomHandInputScript_onPerformingActionNonDomA;
-        nonDomHandInputScript.onPerformingActionNonDomB += nonDomHandInputScript_onPerformingActionNonDomB;
-        //UpA
-        domHandInputScript.onPerformingActionUpA += domHandInputScript_onPerformingActionUpA;
-        domHandInputScript.onPerformingActionUpB += domHandInputScript_onPerformingActionUpB;
+    public abstract void domHandInputScript_onPerformingActionUpA(object sender, EventArgs e);
 
-        nonDomHandInputScript.onPerformingActionUpA += nonDomHandInputScript_onPerformingActionUpA;
-        nonDomHandInputScript.onPerformingActionUpB += nonDomHandInputScript_onPerformingActionUpB;
-        //Down
-        domHandInputScript.onPerformingActionDownA += domHandInputScript_onPerformingActionDownA;
-        domHandInputScript.onPerformingActionDownB += domHandInputScript_onPerformingActionDownB;
+    public abstract void nonDomHandInputScript_onPerformingActionNonDomB(object sender, EventArgs e);
 
-        nonDomHandInputScript.onPerformingActionDownA += nonDomHandInputScript_onPerformingActionDownA;
-        nonDomHandInputScript.onPerformingActionDownB += nonDomHandInputScript_onPerformingActionDownB;
-        //Neutral
-        domHandInputScript.onPerformingActionNeutralA += domHandInputScript_onPerformingActionNeutralA;
-        domHandInputScript.onPerformingActionNeutralB += domHandInputScript_onPerformingActionNeutralB;
+    public abstract void nonDomHandInputScript_onPerformingActionNonDomA(object sender, EventArgs e);
 
-        nonDomHandInputScript.onPerformingActionNeutralA += nonDomHandInputScript_onPerformingActionNeutralA;
-        nonDomHandInputScript.onPerformingActionNeutralB += nonDomHandInputScript_onPerformingActionNeutralB;
+    public abstract void domHandInputScript_onPerformingActionNonDomB(object sender, EventArgs e);
 
-    }
+    public abstract void domHandInputScript_onPerformingActionNonDomA(object sender, EventArgs e);
 
-    private void SetSpawnPoints()
-    {
-        if(movementManager.GetDominantHandEnum() == MovementManager.Hands.RightHand)
-        {
-            domSpawn = rightSpawn;
-            nonDomSpawn = leftSpawn;
-        }else
-        {
-            domSpawn = leftSpawn;
-            nonDomSpawn = rightSpawn;
-        }
-    }
+    public abstract void nonDomHandInputScript_onPerformingActionDomB(object sender, EventArgs e);
 
+    public abstract void nonDomHandInputScript_onPerformingActionDomA(object sender, EventArgs e);
 
-    private void Start()
-    {
-        currentActionScript = actionBaseScripts[0];
-    }
-    private void Update()
-    {
-        if(domHandInputScript.GetCanPerformingAction() && speedDom > 0)
-        {
-            speedDom--;
-        }
+    public abstract void domHandInputScript_onPerformingActionDomB(object sender, EventArgs e);
 
-        if(!nonDomHandInputScript.GetCanPerformingAction() && speedNonDom > 0)
-        {
-            speedNonDom--;
-        }
-        
-    }
-
-    //Coroutines
-
-
-    //EventListeners
-    private void nonDomHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void nonDomHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
-    {
-        currentActionScript.ActionNeutralA(nonDomHandInputScript, nonDomSpawn);
-        
-    }
-
-    private void domHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void domHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
-    {
-        currentActionScript.ActionNeutralA(domHandInputScript, domSpawn);
-        
-    }
-
-    private void nonDomHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
-    {
-        currentActionScript.ActionDownB(nonDomHandInputScript, nonDomSpawn, playerRb, speedNonDom);
-        speedNonDom++;
-        if (playerRb.transform.position.y > maxFlyHeight)
-        {
-            nonDomHandInputScript.SetCanPerformAction(false);
-        }
-        else
-        {
-            nonDomHandInputScript.SetCanPerformAction(true);
-        }
-
-    }
-
-    private void nonDomHandInputScript_onPerformingActionDownA(object sender, EventArgs e)
-    {
-        currentActionScript.ActionDownB(nonDomHandInputScript, nonDomSpawn, playerRb, speedNonDom);
-        speedNonDom++;
-        if(playerRb.transform.position.y > maxFlyHeight)
-        {
-            nonDomHandInputScript.SetCanPerformAction(false);
-        }
-        else
-        {
-            nonDomHandInputScript.SetCanPerformAction(true);
-        }
-        
-    }
-
-    private void domHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
-    {
-        currentActionScript.ActionDownB(domHandInputScript, domSpawn, playerRb, speedDom);
-        speedDom++;
-        if (playerRb.transform.position.y > maxFlyHeight)
-        {
-            nonDomHandInputScript.SetCanPerformAction(false);
-        }
-        else
-        {
-            nonDomHandInputScript.SetCanPerformAction(true);
-        }
-
-    }
-
-    private void domHandInputScript_onPerformingActionDownA(object sender, EventArgs e)
-    {
-        currentActionScript.ActionDownB(domHandInputScript, domSpawn, playerRb, speedDom);
-        speedDom++;
-        if (playerRb.transform.position.y > maxFlyHeight)
-        {
-            nonDomHandInputScript.SetCanPerformAction(false);
-        }
-        else
-        {
-            nonDomHandInputScript.SetCanPerformAction(true);
-        }
-
-    }
-
-    private void nonDomHandInputScript_onPerformingActionUpB(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void nonDomHandInputScript_onPerformingActionUpA(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void domHandInputScript_onPerformingActionUpB(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void domHandInputScript_onPerformingActionUpA(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void nonDomHandInputScript_onPerformingActionNonDomB(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void nonDomHandInputScript_onPerformingActionNonDomA(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void domHandInputScript_onPerformingActionNonDomB(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void domHandInputScript_onPerformingActionNonDomA(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void nonDomHandInputScript_onPerformingActionDomB(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void nonDomHandInputScript_onPerformingActionDomA(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void domHandInputScript_onPerformingActionDomB(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void domHandInputScript_onPerformingActionDomA(object sender, EventArgs e)
-    {
-        throw new NotImplementedException();
-    }
+    public abstract void domHandInputScript_onPerformingActionDomA(object sender, EventArgs e);
 
 
 
