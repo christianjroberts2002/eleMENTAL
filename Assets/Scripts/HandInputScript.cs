@@ -7,7 +7,7 @@ using UnityEngine;
 public class HandInputScript : MonoBehaviour
 {
     
-    [SerializeField] private bool isPerformingAction;
+    [SerializeField] private bool canPerformAction;
 
     //"Right" Dom
     public event EventHandler onPerformingActionDomA;
@@ -86,10 +86,10 @@ public class HandInputScript : MonoBehaviour
 
     void Update()
     {
-        //if (!isPerformingAction)
-        //{
-        ReadInput();
-        //}
+        if (canPerformAction)
+        {
+            ReadInput();
+        }
 
     }
 
@@ -113,17 +113,20 @@ public class HandInputScript : MonoBehaviour
             else if(thisHandGrabisActivated)
             {
                 handInput = HandInput.NeutralB;
+                onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
             }
         }else if(inputDirection == HandInputDirection.InputDirection.Up)
         {
             if (thisHandTriggerIsActivated)
             {
                 handInput = HandInput.UpA;
+                onPerformingActionUpA?.Invoke(this, EventArgs.Empty);
 
             }
             else if (thisHandGrabisActivated)
             {
                 handInput = HandInput.UpB;
+                onPerformingActionUpB?.Invoke(this, EventArgs.Empty);
             }
         }
         else if(inputDirection == HandInputDirection.InputDirection.Down)
@@ -131,11 +134,13 @@ public class HandInputScript : MonoBehaviour
             if (thisHandTriggerIsActivated)
             {
                 handInput = HandInput.DownA;
+                onPerformingActionDownA?.Invoke(this, EventArgs.Empty);
 
             }
             else if (thisHandGrabisActivated)
             {
                 handInput = HandInput.DownB;
+                onPerformingActionDownB?.Invoke(this, EventArgs.Empty);
             }
         }
         else if(inputDirection == HandInputDirection.InputDirection.DomSide)
@@ -143,11 +148,13 @@ public class HandInputScript : MonoBehaviour
             if (thisHandTriggerIsActivated)
             {
                 handInput = HandInput.DomA;
+                onPerformingActionDomA?.Invoke(this, EventArgs.Empty);
 
             }
             else if (thisHandGrabisActivated)
             {
                 handInput = HandInput.DomB;
+                onPerformingActionDomB?.Invoke(this, EventArgs.Empty);
             }
         }
         else if(inputDirection == HandInputDirection.InputDirection.NonDomSide)
@@ -155,21 +162,23 @@ public class HandInputScript : MonoBehaviour
             if (thisHandTriggerIsActivated)
             {
                 handInput = HandInput.NonDomA;
+                onPerformingActionNonDomA?.Invoke(this, EventArgs.Empty);
 
             }
             else if (thisHandGrabisActivated)
             {
                 handInput = HandInput.NonDomB;
+                onPerformingActionNonDomB?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        
+        //Debug.Log(handInput.ToString());
 
     }
 
     public void SetIsNotPerformingAction()
     {
-        isPerformingAction = false;
+        canPerformAction = false;
     }
 
     private void CheckIfIsPressingActionButtons()
@@ -200,9 +209,19 @@ public class HandInputScript : MonoBehaviour
     {
         CheckIfIsPressingActionButtons();
 
-        if(thisHandGrabisActivated || thisHandTriggerIsActivated)
-        {
-            isPerformingAction = true;
-        }
+        //if(thishandgrabisactivated || thishandtriggerisactivated)
+        //{
+        //    canperformaction = true;
+        //}
+    }
+
+    public bool GetCanPerformingAction()
+    {
+        return canPerformAction;
+    }
+
+    public void SetCanPerformAction(bool canPerformAction)
+    {
+        this.canPerformAction = canPerformAction;
     }
 }

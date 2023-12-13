@@ -55,13 +55,6 @@ public class MovementManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-
-    }
-
-    public void Start()
-    {
-        
-
         if (domHand != Hands.RightHand)
         {
             GameObject tempHand = domHandGO;
@@ -75,6 +68,14 @@ public class MovementManager : MonoBehaviour
         domHandInputDirectionManager = domHandGO.GetComponent<HandInputDirection>();
         nonDomHandInputDirectionManager = nonDomHandGO.GetComponent<HandInputDirection>();
         Debug.Log("1");
+
+    }
+
+    public void Start()
+    {
+        
+
+        
         onDomHandSet?.Invoke(this, EventArgs.Empty);
 
         //Fixes a bug??

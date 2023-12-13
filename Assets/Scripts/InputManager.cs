@@ -1,11 +1,16 @@
 using HurricaneVR.Framework.ControllerInput;
+using HurricaneVR.Framework.Core.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class InputManager : MonoBehaviour
 {
+
+    //Player RB
+    [SerializeField] Rigidbody playerRb;
     //Hands
     [SerializeField] GameObject domHandGo;
     [SerializeField] GameObject nonDomHandGo;
@@ -26,6 +31,14 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] ActionBaseScript currentActionScript;
 
+    //speed
+    private float speedDom;
+    private float speedNonDom;
+
+    //Flying
+
+    [SerializeField] private float maxFlyHeight;
+
 
     //Movement Manager
     private MovementManager movementManager;
@@ -43,11 +56,13 @@ public class InputManager : MonoBehaviour
         domHandGo = movementManager.GetDominantHand();
         nonDomHandGo = movementManager.GetNonDominantHand();
 
+        //SetTheSpawnPoints
+        SetSpawnPoints();
+
         domHandInputScript = domHandGo.GetComponent<HandInputScript>();
         nonDomHandInputScript = nonDomHandGo.GetComponent<HandInputScript>();
 
-        //SetTheSpawnPoints
-        SetSpawnPoints();
+        
 
         //DomA
         domHandInputScript.onPerformingActionDomA += domHandInputScript_onPerformingActionDomA;
@@ -95,6 +110,29 @@ public class InputManager : MonoBehaviour
         }
     }
 
+
+    private void Start()
+    {
+        currentActionScript = actionBaseScripts[0];
+    }
+    private void Update()
+    {
+        if(domHandInputScript.GetCanPerformingAction() && speedDom > 0)
+        {
+            speedDom--;
+        }
+
+        if(!nonDomHandInputScript.GetCanPerformingAction() && speedNonDom > 0)
+        {
+            speedNonDom--;
+        }
+        
+    }
+
+    //Coroutines
+
+
+    //EventListeners
     private void nonDomHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
     {
         throw new NotImplementedException();
@@ -102,7 +140,8 @@ public class InputManager : MonoBehaviour
 
     private void nonDomHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
     {
-        currentActionScript.ActionNeutralA(nonDomSpawn);
+        currentActionScript.ActionNeutralA(nonDomHandInputScript, nonDomSpawn);
+        
     }
 
     private void domHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
@@ -112,27 +151,68 @@ public class InputManager : MonoBehaviour
 
     private void domHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
     {
-        currentActionScript.ActionNeutralA(domSpawn);
+        currentActionScript.ActionNeutralA(domHandInputScript, domSpawn);
+        
     }
 
     private void nonDomHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        currentActionScript.ActionDownB(nonDomHandInputScript, nonDomSpawn, playerRb, speedNonDom);
+        speedNonDom++;
+        if (playerRb.transform.position.y > maxFlyHeight)
+        {
+            nonDomHandInputScript.SetCanPerformAction(false);
+        }
+        else
+        {
+            nonDomHandInputScript.SetCanPerformAction(true);
+        }
+
     }
 
     private void nonDomHandInputScript_onPerformingActionDownA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        currentActionScript.ActionDownB(nonDomHandInputScript, nonDomSpawn, playerRb, speedNonDom);
+        speedNonDom++;
+        if(playerRb.transform.position.y > maxFlyHeight)
+        {
+            nonDomHandInputScript.SetCanPerformAction(false);
+        }
+        else
+        {
+            nonDomHandInputScript.SetCanPerformAction(true);
+        }
+        
     }
 
     private void domHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        currentActionScript.ActionDownB(domHandInputScript, domSpawn, playerRb, speedDom);
+        speedDom++;
+        if (playerRb.transform.position.y > maxFlyHeight)
+        {
+            nonDomHandInputScript.SetCanPerformAction(false);
+        }
+        else
+        {
+            nonDomHandInputScript.SetCanPerformAction(true);
+        }
+
     }
 
     private void domHandInputScript_onPerformingActionDownA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        currentActionScript.ActionDownB(domHandInputScript, domSpawn, playerRb, speedDom);
+        speedDom++;
+        if (playerRb.transform.position.y > maxFlyHeight)
+        {
+            nonDomHandInputScript.SetCanPerformAction(false);
+        }
+        else
+        {
+            nonDomHandInputScript.SetCanPerformAction(true);
+        }
+
     }
 
     private void nonDomHandInputScript_onPerformingActionUpB(object sender, EventArgs e)
@@ -195,10 +275,6 @@ public class InputManager : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    private void Start()
-    {
-        currentActionScript = actionBaseScripts[0];
-    }
 
 
 
