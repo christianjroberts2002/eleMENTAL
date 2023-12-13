@@ -2545,6 +2545,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44680a762b2436340a596c4e5e9b6df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amplitude: 2
+  duration: 0.1
+  frequency: 0.1
   fireProjectilePrefab: {fileID: 7995662533807356028, guid: 18628fdb200e7834a98c4d9b07b0c64a, type: 3}
   playerRb: {fileID: 155051116}
   domHandGo: {fileID: 0}
@@ -2741,8 +2744,8 @@ MonoBehaviour:
   canPerformAction: 1
   thisHandTriggerIsActivated: 0
   otherDomHandTriggerIsActivated: 0
-  thisHandGrabisActivated: 0
-  otherDomHandGrabisActivated: 0
+  thisHandHoldisActivated: 0
+  otherDomHandHoldisActivated: 0
   playerInputScript: {fileID: 1053507619}
   handInputDirection: {fileID: 0}
   HVRTrackedController: {fileID: 2004486054}
@@ -4666,8 +4669,8 @@ MonoBehaviour:
   canPerformAction: 1
   thisHandTriggerIsActivated: 0
   otherDomHandTriggerIsActivated: 0
-  thisHandGrabisActivated: 0
-  otherDomHandGrabisActivated: 0
+  thisHandHoldisActivated: 0
+  otherDomHandHoldisActivated: 0
   playerInputScript: {fileID: 1053507619}
   handInputDirection: {fileID: 0}
   HVRTrackedController: {fileID: 288993210}
