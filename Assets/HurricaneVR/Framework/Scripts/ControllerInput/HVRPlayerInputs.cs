@@ -101,6 +101,7 @@ namespace HurricaneVR.Framework.ControllerInput
 
 
         }
+
         public void Update()
         {
             UpdateInput();

@@ -33,8 +33,8 @@ public class HandInputScript : MonoBehaviour
     [SerializeField] private bool thisHandTriggerIsActivated;
     [SerializeField] private bool otherDomHandTriggerIsActivated;
 
-    [SerializeField] private bool thisHandGrabisActivated;
-    [SerializeField] private bool otherDomHandGrabisActivated;
+    [SerializeField] private bool thisHandHoldisActivated;
+    [SerializeField] private bool otherDomHandHoldisActivated;
 
     private bool isRightHand;
 
@@ -100,7 +100,7 @@ public class HandInputScript : MonoBehaviour
 
         if(inputDirection == HandInputDirection.InputDirection.Neutral)
         {
-            if(thisHandGrabisActivated && thisHandTriggerIsActivated)
+            if(thisHandHoldisActivated && thisHandTriggerIsActivated)
             {
                 Debug.Log("Shield");
             }
@@ -110,7 +110,7 @@ public class HandInputScript : MonoBehaviour
                 onPerformingActionNeutralA?.Invoke(this, EventArgs.Empty);
 
             }
-            else if(thisHandGrabisActivated)
+            else if(thisHandHoldisActivated)
             {
                 handInput = HandInput.NeutralB;
                 onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
@@ -123,7 +123,7 @@ public class HandInputScript : MonoBehaviour
                 onPerformingActionUpA?.Invoke(this, EventArgs.Empty);
 
             }
-            else if (thisHandGrabisActivated)
+            else if (thisHandHoldisActivated)
             {
                 handInput = HandInput.UpB;
                 onPerformingActionUpB?.Invoke(this, EventArgs.Empty);
@@ -137,7 +137,7 @@ public class HandInputScript : MonoBehaviour
                 onPerformingActionDownA?.Invoke(this, EventArgs.Empty);
 
             }
-            else if (thisHandGrabisActivated)
+            else if (thisHandHoldisActivated)
             {
                 handInput = HandInput.DownB;
                 onPerformingActionDownB?.Invoke(this, EventArgs.Empty);
@@ -151,7 +151,7 @@ public class HandInputScript : MonoBehaviour
                 onPerformingActionDomA?.Invoke(this, EventArgs.Empty);
 
             }
-            else if (thisHandGrabisActivated)
+            else if (thisHandHoldisActivated)
             {
                 handInput = HandInput.DomB;
                 onPerformingActionDomB?.Invoke(this, EventArgs.Empty);
@@ -165,7 +165,7 @@ public class HandInputScript : MonoBehaviour
                 onPerformingActionNonDomA?.Invoke(this, EventArgs.Empty);
 
             }
-            else if (thisHandGrabisActivated)
+            else if (thisHandHoldisActivated)
             {
                 handInput = HandInput.NonDomB;
                 onPerformingActionNonDomB?.Invoke(this, EventArgs.Empty);
@@ -187,7 +187,7 @@ public class HandInputScript : MonoBehaviour
         if(isRightHand)
         {
             //BInputs Special Attacks
-            thisHandGrabisActivated = HVRPlayerInputs.Instance.IsRightGrabActivated;
+            thisHandHoldisActivated = HVRPlayerInputs.Instance.IsRightHoldActive;
             
             //AInputs Smash Attacks
             thisHandTriggerIsActivated = HVRPlayerInputs.Instance.IsRightTriggerHoldActive;
@@ -196,8 +196,8 @@ public class HandInputScript : MonoBehaviour
         else
         {
             //BInputs Special Attacks
-            thisHandGrabisActivated = HVRPlayerInputs.Instance.IsLeftGrabActivated;
-            
+            thisHandHoldisActivated = HVRPlayerInputs.Instance.IsLeftHoldActive;
+
             //AInputs Smash Attacks
             thisHandTriggerIsActivated = HVRPlayerInputs.Instance.IsLeftTriggerHoldActive;
             
@@ -223,5 +223,15 @@ public class HandInputScript : MonoBehaviour
     public void SetCanPerformAction(bool canPerformAction)
     {
         this.canPerformAction = canPerformAction;
+    }
+
+    public bool GetThisHandTriggerIsActivated()
+    {
+        return thisHandTriggerIsActivated;
+    }
+
+    public bool GetThisHandHoldIsActivated()
+    {
+        return thisHandHoldisActivated;
     }
 }

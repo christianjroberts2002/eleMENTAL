@@ -28,12 +28,15 @@ public class FireMoveSet : InputManager
 
 
     //speed
-    private float speedDom;
-    private float speedNonDom;
+    private float domSpeed;
+    private float nonDomSpeed;
+
+    private float flySpeedMultiplyer = 5f;
 
     //Flying
 
     [SerializeField] private float maxFlyHeight;
+    [SerializeField] private float maxFlySpeed;
 
 
     //Movement Manager
@@ -93,6 +96,35 @@ public class FireMoveSet : InputManager
 
     }
 
+    private void Update()
+    {
+        if(domHandInputScript.GetThisHandHoldIsActivated())
+        {
+            domSpeed += 0.25f;
+        }
+        else
+        {
+            if(domSpeed > 0)
+            {
+                domSpeed--;
+
+            }
+        }
+
+        if(nonDomHandInputScript.GetThisHandHoldIsActivated())
+        {
+            nonDomSpeed += 0.25f;
+        }
+        else
+        {
+            if(nonDomSpeed > 0)
+            {
+                nonDomSpeed--;
+            }
+            
+        }
+    }
+
     private void SetSpawnPoints()
     {
         if (movementManager.GetDominantHandEnum() == MovementManager.Hands.RightHand)
@@ -110,165 +142,184 @@ public class FireMoveSet : InputManager
 
 
 
-    public void ActionDomA()
+    public void ActionDomA(Transform handTransform)
     {
-        
-        throw new System.NotImplementedException();
-        
-    }
 
-    public void ActionDomB()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void ActionDownA()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void ActionDownB(HandInputScript handInput, Transform handTransform, Rigidbody playerRb, float flySpeed)
-    {
-        Debug.Log("Fly");
         GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
-        Destroy(fireProjectile , 2f);
-        Vector3 flyDir = playerRb.gameObject.transform.position - handTransform.position + transform.up;
-        if(playerRb.velocity.magnitude < 20)
-        {
-            playerRb.AddForce(flyDir * flySpeed * 5);
-        }
-        
+        Destroy(fireProjectile, 2f);
+
     }
 
-    public void ActionNeutralA(HandInputScript handInputScript, Transform handTransform)
+    public void ActionDomB(Transform handTransform)
     {
-       
+        GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+        Destroy(fireProjectile, 2f);
+    }
+
+    public void ActionDownA(Transform handTransform, Rigidbody playerRb, float flySpeed)
+    {
+        if (playerRb.gameObject.transform.position.y < maxFlyHeight)
+        {
+            Debug.Log("Fly");
+            GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+            Destroy(fireProjectile, 2f);
+            Vector3 flyDir =  (handTransform.right  * 20)  + transform.up;
+            if (playerRb.velocity.magnitude < maxFlySpeed)
+            {
+                playerRb.AddForce(flyDir * flySpeed * flySpeedMultiplyer);
+            }
+        }
+    }
+
+    public void ActionDownB(Transform handTransform, Rigidbody playerRb, float flySpeed)
+    {
+        if (playerRb.gameObject.transform.position.y < maxFlyHeight)
+        {
+            Debug.Log("Fly");
+            GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+            Destroy(fireProjectile, 2f);
+            Vector3 flyDir = (handTransform.right * 20) + transform.up;
+            if (playerRb.velocity.magnitude < maxFlySpeed)
+            {
+                playerRb.AddForce(flyDir * flySpeed * flySpeedMultiplyer, ForceMode.Force);
+            }
+        }
+    }
+
+    public void ActionNeutralA(Transform handTransform)
+    {
        GameObject fireProjectile =  Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
        Destroy(fireProjectile, 2f);
     }
-    public void ActionNeutralB()
+    public void ActionNeutralB(Transform handTransform)
     {
-        throw new System.NotImplementedException();
-
+        GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+        Destroy(fireProjectile, 2f);
     }
 
-    public void ActionNonDomA()
+    public void ActionNonDomA(Transform handTransform)
     {
-        throw new System.NotImplementedException();
+        GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+        Destroy(fireProjectile, 2f);
     }
 
-    public void ActionNonDomB()
+    public void ActionNonDomB(Transform handTransform)
     {
-        throw new System.NotImplementedException();
+        GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+        Destroy(fireProjectile, 2f);
     }
 
-    public void ActionUpA()
+    public void ActionUpA(Transform handTransform)
     {
-        throw new System.NotImplementedException();
+        GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+        Destroy(fireProjectile, 2f);
     }
 
-    public void ActionUpB()
+    public void ActionUpB(Transform handTransform)
     {
-        throw new System.NotImplementedException();
+        GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+        Destroy(fireProjectile, 2f);
     }
+
+    //Event Listeners
 
     public override void domHandInputScript_onPerformingActionDomA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionDomA(domHandSpawn);
     }
 
     public override void domHandInputScript_onPerformingActionDomB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionDomB(domHandSpawn);
     }
 
     public override void domHandInputScript_onPerformingActionDownA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionDownA(domHandSpawn, playerRb, domSpeed);
     }
 
     public override void domHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionDownB(domHandSpawn, playerRb, domSpeed);
     }
 
     public override void domHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionNeutralA(domHandSpawn);
     }
 
     public override void domHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionNeutralB(domHandSpawn);
     }
 
     public override void domHandInputScript_onPerformingActionNonDomA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+       ActionNonDomA(domHandSpawn);
     }
 
     public override void domHandInputScript_onPerformingActionNonDomB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionNonDomB(domHandSpawn);
     }
 
     public override void domHandInputScript_onPerformingActionUpA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionUpA(domHandSpawn);
     }
 
     public override void domHandInputScript_onPerformingActionUpB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionUpB(domHandSpawn);
     }
 
     public override void nonDomHandInputScript_onPerformingActionDomA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionDomA(nonDomHandSpawn);
     }
 
     public override void nonDomHandInputScript_onPerformingActionDomB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionDomB(nonDomHandSpawn);
     }
 
     public override void nonDomHandInputScript_onPerformingActionDownA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionDownA(nonDomHandSpawn, playerRb, nonDomSpeed);
     }
 
     public override void nonDomHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionDownB(nonDomHandSpawn, playerRb, nonDomSpeed);
     }
 
     public override void nonDomHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionNeutralA(nonDomHandSpawn);
     }
 
     public override void nonDomHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionNeutralB(nonDomHandSpawn);
     }
 
     public override void nonDomHandInputScript_onPerformingActionNonDomA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionNonDomA(nonDomHandSpawn);
     }
 
     public override void nonDomHandInputScript_onPerformingActionNonDomB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionNonDomB(nonDomHandSpawn);
     }
 
     public override void nonDomHandInputScript_onPerformingActionUpA(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionUpA(nonDomHandSpawn);
     }
 
     public override void nonDomHandInputScript_onPerformingActionUpB(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        ActionUpB(nonDomHandSpawn);
     }
 }
