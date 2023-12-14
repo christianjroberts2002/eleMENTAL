@@ -1543,6 +1543,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2131815021}
     m_Modifications:
+    - target: {fileID: 4998883516943468025, guid: fbf28eb7347204f48955ccc353f93725, type: 3}
+      propertyPath: stopAction
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7310545594845151671, guid: fbf28eb7347204f48955ccc353f93725, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2615,6 +2619,8 @@ MonoBehaviour:
   duration: 0.1
   frequency: 0.1
   fireProjectilePrefab: {fileID: 7995662533807356028, guid: 18628fdb200e7834a98c4d9b07b0c64a, type: 3}
+  domDownBFirePorjectile: {fileID: 0}
+  nonDomDownBFirePorjectile: {fileID: 0}
   playerRb: {fileID: 155051116}
   domHandGo: {fileID: 0}
   nonDomHandGo: {fileID: 0}

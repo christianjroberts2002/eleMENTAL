@@ -126,12 +126,14 @@ public class FireMoveSet : InputManager
         if(domHandInputScript.GetThisHandHoldIsActivated())
         {
             domSpeed += 0.25f;
+            domDownBFirePorjectile.Play();
         }
         else
         {
             if(domSpeed > 0)
             {
                 domSpeed--;
+                domDownBFirePorjectile.Stop();
 
             }
         }
@@ -139,19 +141,23 @@ public class FireMoveSet : InputManager
         if(nonDomHandInputScript.GetThisHandHoldIsActivated())
         {
             nonDomSpeed += 0.25f;
+            nonDomDownBFirePorjectile.Play();
         }
         else
         {
             if(nonDomSpeed > 0)
             {
                 nonDomSpeed--;
+                nonDomDownBFirePorjectile.Stop();
             }
             
         }
         nonDomDownBFirePorjectile.startSpeed = nonDomSpeed;
 
-        domDownBFirePorjectile.Play(domHandInputScript.GetThisHandHoldIsActivated());
-        nonDomDownBFirePorjectile.Play(nonDomHandInputScript.GetThisHandHoldIsActivated());
+        
+        
+
+        
     }
 
     private void SetSpawnPoints()
