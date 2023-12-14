@@ -25,6 +25,10 @@ public class FireMoveSet : InputManager
 
     [SerializeField] private GameObject fireProjectilePrefab;
 
+    //ParticleSystem
+    [SerializeField] private ParticleSystem domDownBFirePorjectile;
+    [SerializeField] private ParticleSystem nonDomDownBFirePorjectile;
+
     //Player RB
     [SerializeField] Rigidbody playerRb;
     //Hands
@@ -81,6 +85,9 @@ public class FireMoveSet : InputManager
         domHandHaptics = domHandGo.GetComponent<HVRHandGrabber>();
         nonDomHandHaptics = nonDomHandGo.GetComponent<HVRHandGrabber>();
 
+        domDownBFirePorjectile = domHandGo.GetComponentInChildren<ParticleSystem>();
+        nonDomDownBFirePorjectile = nonDomHandGo.GetComponentInChildren<ParticleSystem>();
+
         //DomA
         domHandInputScript.onPerformingActionDomA += domHandInputScript_onPerformingActionDomA;
         domHandInputScript.onPerformingActionDomB += domHandInputScript_onPerformingActionDomB;
@@ -128,7 +135,7 @@ public class FireMoveSet : InputManager
 
             }
         }
-
+        domDownBFirePorjectile.startSpeed = domSpeed;
         if(nonDomHandInputScript.GetThisHandHoldIsActivated())
         {
             nonDomSpeed += 0.25f;
@@ -141,6 +148,10 @@ public class FireMoveSet : InputManager
             }
             
         }
+        nonDomDownBFirePorjectile.startSpeed = nonDomSpeed;
+
+        domDownBFirePorjectile.Play(domHandInputScript.GetThisHandHoldIsActivated());
+        nonDomDownBFirePorjectile.Play(nonDomHandInputScript.GetThisHandHoldIsActivated());
     }
 
     private void SetSpawnPoints()
@@ -190,18 +201,22 @@ public class FireMoveSet : InputManager
         }
     }
 
-    public void ActionDownB(Transform handTransform, Rigidbody playerRb, float flySpeed, HVRHandGrabber handHaptic)
+    public void ActionDownB(Transform handTransform, Rigidbody playerRb, float flySpeed, HVRHandGrabber handHaptic, ParticleSystem downBParticleSystem)
     {
+        
+
         if (playerRb.gameObject.transform.position.y < maxFlyHeight)
         {
+            
+            
             Debug.Log("Fly");
             amplitude = flySpeed * .05f;
-
             handHaptic.Controller.Vibrate(amplitude, duration, frequency);
-            GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
-            Rigidbody fireRb = fireProjectile.GetComponent<Rigidbody>();
-            fireRb.AddForce(playerRb.velocity + (fireRb.transform.right * -500));
-            Destroy(fireProjectile, .25f);
+
+            //GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+            //Rigidbody fireRb = fireProjectile.GetComponent<Rigidbody>();
+            //fireRb.AddForce(playerRb.velocity + (fireRb.transform.right * -500));
+            //Destroy(fireProjectile, .25f);
             Vector3 flyDir = (handTransform.right * 20) + transform.up;
             if (playerRb.velocity.magnitude < maxFlySpeed)
             {
@@ -264,7 +279,7 @@ public class FireMoveSet : InputManager
 
     public override void domHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
     {
-        ActionDownB(domHandSpawn, playerRb, domSpeed, domHandHaptics);
+        ActionDownB(domHandSpawn, playerRb, domSpeed, domHandHaptics, domDownBFirePorjectile);
     }
 
     public override void domHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
@@ -314,7 +329,7 @@ public class FireMoveSet : InputManager
 
     public override void nonDomHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
     {
-        ActionDownB(nonDomHandSpawn, playerRb, nonDomSpeed, nonDomHandHaptics);
+        ActionDownB(nonDomHandSpawn, playerRb, nonDomSpeed, nonDomHandHaptics, nonDomDownBFirePorjectile);
     }
 
     public override void nonDomHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
