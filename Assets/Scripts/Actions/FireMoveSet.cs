@@ -1,8 +1,11 @@
+using HexabodyVR.PlayerController;
 using HurricaneVR.Framework.Components;
 using HurricaneVR.Framework.Core.Grabbers;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -52,16 +55,25 @@ public class FireMoveSet : InputManager
     private float domSpeed;
     private float nonDomSpeed;
 
+    //Timers
     private float flySpeedMultiplyer = 5f;
+    private float domBTimer = 2f;
 
     //Flying
 
     [SerializeField] private float maxFlyHeight;
     [SerializeField] private float maxFlySpeed;
 
+    [SerializeField] private float flyTimer;
+    [SerializeField] private float flyTime;
 
     //Movement Manager
     private MovementManager movementManager;
+
+    //Hexa Body Player 4
+    [SerializeField] HexaBodyPlayer4 hexaBodyPlayer;
+
+    //Enums
     public enum NatureType
     {
         Water,
@@ -70,12 +82,16 @@ public class FireMoveSet : InputManager
         Air
     }
 
+    //DomB
+    [SerializeField] private Vector3 domBStartPos;
+    [SerializeField] public Vector3 domBEndPos;
+
     private void Awake()
     {
         movementManager = MovementManager.instance;
         domHandGo = movementManager.GetDominantHand();
         nonDomHandGo = movementManager.GetNonDominantHand();
-
+        
         //SetTheSpawnPoints
         SetSpawnPoints();
 
@@ -123,13 +139,15 @@ public class FireMoveSet : InputManager
 
     private void Update()
     {
-        if(domHandInputScript.GetThisHandHoldIsActivated())
+        //Make a function
+        if(domHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0)
         {
             domSpeed += 0.25f;
             domDownBFirePorjectile.Play();
         }
         else
         {
+            
             if(domSpeed > 0)
             {
                 domSpeed--;
@@ -137,14 +155,17 @@ public class FireMoveSet : InputManager
 
             }
         }
+
+        //Make A funtion
         domDownBFirePorjectile.startSpeed = domSpeed;
-        if(nonDomHandInputScript.GetThisHandHoldIsActivated())
+        if(nonDomHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0)
         {
             nonDomSpeed += 0.25f;
             nonDomDownBFirePorjectile.Play();
         }
         else
         {
+            
             if(nonDomSpeed > 0)
             {
                 nonDomSpeed--;
@@ -152,12 +173,45 @@ public class FireMoveSet : InputManager
             }
             
         }
+
+       
+        //Make a Function
         nonDomDownBFirePorjectile.startSpeed = nonDomSpeed;
+        ParticleSystem.ShapeModule nonDomNewShape = nonDomDownBFirePorjectile.shape;
+        nonDomNewShape.radius = nonDomSpeed / 30;
+        ParticleSystem.EmissionModule nonDomEmission = nonDomDownBFirePorjectile.emission;
+        nonDomEmission.rateOverTime = nonDomSpeed * 20;
+
+        domDownBFirePorjectile.startSpeed = nonDomSpeed;
+        ParticleSystem.ShapeModule domNewShape = nonDomDownBFirePorjectile.shape;
+        domNewShape.radius = domSpeed / 30;
+        ParticleSystem.EmissionModule domEmission = nonDomDownBFirePorjectile.emission;
+        nonDomEmission.rateOverTime = domSpeed * 20;
+
+
+
 
         
-        
+
 
         
+    }
+
+    private void DownBTimer()
+    {
+        if (hexaBodyPlayer.IsGrounded)
+        {
+            flyTimer = flyTime;
+        }
+        else
+        {
+            flyTimer -= 1 * Time.deltaTime;
+        }
+    }
+
+   private float ActionTimer(float timeAmount, float timeDecreaseAmount)
+    {
+        return timeAmount -= timeDecreaseAmount * Time.deltaTime;
     }
 
     private void SetSpawnPoints()
@@ -181,54 +235,65 @@ public class FireMoveSet : InputManager
     {
 
         GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
-        
         Destroy(fireProjectile, 2f);
 
     }
 
-    public void ActionDomB(Transform handTransform)
+    public void ActionDomB(Transform handTransform, HandInputScript handInputScript)
     {
-        GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
-        Destroy(fireProjectile, 2f);
+        
+
+        domBTimer = ActionTimer(domBTimer, 1);
+        if(domBStartPos == null)
+        {
+            domBStartPos = handTransform.position;
+        }
+        if(handInputScript.GetActionIsEnding())
+        {
+
+        }
+
+
     }
 
     public void ActionDownA(Transform handTransform, Rigidbody playerRb, float flySpeed)
     {
-        if (playerRb.gameObject.transform.position.y < maxFlyHeight)
-        {
-            Debug.Log("Fly");
-            GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
-            Destroy(fireProjectile, 2f);
-            Vector3 flyDir =  (handTransform.right  * 20)  + transform.up;
-            if (playerRb.velocity.magnitude < maxFlySpeed)
-            {
-                playerRb.AddForce(flyDir * flySpeed * flySpeedMultiplyer);
-            }
-        }
+        //if (playerRb.gameObject.transform.position.y < maxFlyHeight)
+        //{
+        //    Debug.Log("Fly");
+        //    GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+        //    Destroy(fireProjectile, 2f);
+        //    Vector3 flyDir =  (handTransform.right  * 20)  + transform.up;
+        //    if (playerRb.velocity.magnitude < maxFlySpeed)
+        //    {
+        //        playerRb.AddForce(flyDir * flySpeed * flySpeedMultiplyer);
+        //    }
+        //}
     }
 
-    public void ActionDownB(Transform handTransform, Rigidbody playerRb, float flySpeed, HVRHandGrabber handHaptic, ParticleSystem downBParticleSystem)
+    public void ActionDownB(HandInputScript handInputScript, Transform handTransform, Rigidbody playerRb, float flySpeed, HVRHandGrabber handHaptic, ParticleSystem downBParticleSystem)
     {
-        
-
-        if (playerRb.gameObject.transform.position.y < maxFlyHeight)
+        if(!handInputScript.GetActionIsEnding())
         {
-            
-            
-            Debug.Log("Fly");
-            amplitude = flySpeed * .05f;
-            handHaptic.Controller.Vibrate(amplitude, duration, frequency);
-
-            //GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
-            //Rigidbody fireRb = fireProjectile.GetComponent<Rigidbody>();
-            //fireRb.AddForce(playerRb.velocity + (fireRb.transform.right * -500));
-            //Destroy(fireProjectile, .25f);
-            Vector3 flyDir = (handTransform.right * 20) + transform.up;
-            if (playerRb.velocity.magnitude < maxFlySpeed)
+            DownBTimer();
+            if (playerRb.gameObject.transform.position.y < maxFlyHeight && flyTimer > 0)
             {
-                playerRb.AddForce(flyDir * flySpeed * flySpeedMultiplyer, ForceMode.Force);
+
+
+                Debug.Log("Fly");
+                amplitude = flySpeed * .05f;
+                handHaptic.Controller.Vibrate(amplitude, duration, frequency);
+                Vector3 flyDir = (handTransform.right * 20) + transform.up;
+                if (playerRb.velocity.magnitude < maxFlySpeed)
+                {
+                    playerRb.AddForce(flyDir * flySpeed * flySpeedMultiplyer, ForceMode.Force);
+                }
             }
+        }else if(handInputScript.GetActionIsEnding())
+        {
+            Debug.Log("oneFrame");
         }
+        
     }
 
     public void ActionNeutralA(Transform handTransform)
@@ -275,7 +340,7 @@ public class FireMoveSet : InputManager
 
     public override void domHandInputScript_onPerformingActionDomB(object sender, EventArgs e)
     {
-        ActionDomB(domHandSpawn);
+        ActionDomB(domHandSpawn, domHandInputScript);
     }
 
     public override void domHandInputScript_onPerformingActionDownA(object sender, EventArgs e)
@@ -285,7 +350,7 @@ public class FireMoveSet : InputManager
 
     public override void domHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
     {
-        ActionDownB(domHandSpawn, playerRb, domSpeed, domHandHaptics, domDownBFirePorjectile);
+        ActionDownB(domHandInputScript, domHandSpawn, playerRb, domSpeed, domHandHaptics, domDownBFirePorjectile);
     }
 
     public override void domHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
@@ -325,7 +390,7 @@ public class FireMoveSet : InputManager
 
     public override void nonDomHandInputScript_onPerformingActionDomB(object sender, EventArgs e)
     {
-        ActionDomB(nonDomHandSpawn);
+        ActionDomB(nonDomHandSpawn, nonDomHandInputScript);
     }
 
     public override void nonDomHandInputScript_onPerformingActionDownA(object sender, EventArgs e)
@@ -335,7 +400,7 @@ public class FireMoveSet : InputManager
 
     public override void nonDomHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
     {
-        ActionDownB(nonDomHandSpawn, playerRb, nonDomSpeed, nonDomHandHaptics, nonDomDownBFirePorjectile);
+        ActionDownB(nonDomHandInputScript,  nonDomHandSpawn, playerRb, nonDomSpeed, nonDomHandHaptics, nonDomDownBFirePorjectile);
     }
 
     public override void nonDomHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)

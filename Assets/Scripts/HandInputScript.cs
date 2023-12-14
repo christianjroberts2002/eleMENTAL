@@ -6,8 +6,11 @@ using UnityEngine;
 
 public class HandInputScript : MonoBehaviour
 {
-    
-    [SerializeField] private bool canPerformAction;
+
+    [SerializeField] private bool canPerformSmash = true;
+    [SerializeField] private bool canPerformSpecial = true;
+
+    [SerializeField] private bool actionIsEnding = false;
 
     //"Right" Dom
     public event EventHandler onPerformingActionDomA;
@@ -86,7 +89,17 @@ public class HandInputScript : MonoBehaviour
 
     void Update()
     {
-        if (canPerformAction)
+
+        CheckIfIsPerformingAction();
+
+        
+
+        SetRealeasedInput();
+
+        SetInput();
+
+
+        if (canPerformSmash)
         {
             ReadInput();
         }
@@ -95,80 +108,90 @@ public class HandInputScript : MonoBehaviour
 
     private void ReadInput()
     {
-        CheckIfIsPerformingAction();
+
         inputDirection = handInputDirection.GetInputDirectionOfHand();
 
-        if(inputDirection == HandInputDirection.InputDirection.Neutral)
+        if (inputDirection == HandInputDirection.InputDirection.Neutral)
         {
-            if(thisHandHoldisActivated && thisHandTriggerIsActivated)
+            if (thisHandHoldisActivated && thisHandTriggerIsActivated)
             {
                 Debug.Log("Shield");
             }
-            if(thisHandTriggerIsActivated)
+            if (thisHandTriggerIsActivated)
             {
                 handInput = HandInput.NeutralA;
-                onPerformingActionNeutralA?.Invoke(this, EventArgs.Empty);
+                canPerformSmash = false;
 
             }
-            else if(thisHandHoldisActivated)
+            else if (thisHandHoldisActivated)
             {
                 handInput = HandInput.NeutralB;
-                onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
+                canPerformSmash = false;
+
             }
-        }else if(inputDirection == HandInputDirection.InputDirection.Up)
+        }
+        else if (inputDirection == HandInputDirection.InputDirection.Up)
         {
             if (thisHandTriggerIsActivated)
             {
                 handInput = HandInput.UpA;
-                onPerformingActionUpA?.Invoke(this, EventArgs.Empty);
+                canPerformSmash = false;
+
 
             }
             else if (thisHandHoldisActivated)
             {
                 handInput = HandInput.UpB;
-                onPerformingActionUpB?.Invoke(this, EventArgs.Empty);
+                canPerformSmash = false;
+
             }
         }
-        else if(inputDirection == HandInputDirection.InputDirection.Down)
+        else if (inputDirection == HandInputDirection.InputDirection.Down)
         {
             if (thisHandTriggerIsActivated)
             {
                 handInput = HandInput.DownA;
-                onPerformingActionDownA?.Invoke(this, EventArgs.Empty);
+                canPerformSmash = false;
+
 
             }
             else if (thisHandHoldisActivated)
             {
                 handInput = HandInput.DownB;
-                onPerformingActionDownB?.Invoke(this, EventArgs.Empty);
+                canPerformSmash = false;
+
             }
         }
-        else if(inputDirection == HandInputDirection.InputDirection.DomSide)
+        else if (inputDirection == HandInputDirection.InputDirection.DomSide)
         {
             if (thisHandTriggerIsActivated)
             {
                 handInput = HandInput.DomA;
-                onPerformingActionDomA?.Invoke(this, EventArgs.Empty);
+                canPerformSmash = false;
+
 
             }
             else if (thisHandHoldisActivated)
             {
                 handInput = HandInput.DomB;
-                onPerformingActionDomB?.Invoke(this, EventArgs.Empty);
+                canPerformSmash = false;
+
             }
         }
-        else if(inputDirection == HandInputDirection.InputDirection.NonDomSide)
+        else if (inputDirection == HandInputDirection.InputDirection.NonDomSide)
         {
             if (thisHandTriggerIsActivated)
             {
                 handInput = HandInput.NonDomA;
-                onPerformingActionNonDomA?.Invoke(this, EventArgs.Empty);
+                canPerformSmash = false;
+
 
             }
             else if (thisHandHoldisActivated)
             {
                 handInput = HandInput.NonDomB;
-                onPerformingActionNonDomB?.Invoke(this, EventArgs.Empty);
+                canPerformSmash = false;
+
             }
         }
 
@@ -176,9 +199,126 @@ public class HandInputScript : MonoBehaviour
 
     }
 
+    public void SetRealeasedInput()
+    {
+        if (!thisHandTriggerIsActivated && actionIsEnding == false)
+        {
+            
+
+            if (handInput == HandInput.NeutralA)
+            {
+                onPerformingActionNeutralA?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.DownA)
+            {
+                onPerformingActionDownA?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.UpA)
+            {
+                onPerformingActionUpA?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.DomA)
+            {
+                onPerformingActionDomA?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.NonDomA)
+            {
+                onPerformingActionNonDomA?.Invoke(this, EventArgs.Empty);
+            }
+            
+
+        }
+        if (!thisHandHoldisActivated && actionIsEnding == false)
+        {
+            
+            
+
+            if (handInput == HandInput.NonDomB)
+            {
+                onPerformingActionNonDomB?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.DomB)
+            {
+                onPerformingActionDomB?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.UpB)
+            {
+                onPerformingActionUpB?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.DownB)
+            {
+                Debug.Log(handInput);
+                onPerformingActionDownB?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.NeutralB)
+            {
+                onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
+            }
+            Debug.Log(handInput);
+            
+        }
+
+        
+    }
+
+    private void SetInput()
+    {
+        if (thisHandTriggerIsActivated)
+        {
+            actionIsEnding = false;
+            if(handInput == HandInput.NeutralA)
+            {
+                onPerformingActionNeutralA?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.DownA)
+            {
+                onPerformingActionDownA?.Invoke(this, EventArgs.Empty);
+            }
+            if(handInput == HandInput.UpA)
+            {
+                onPerformingActionUpA?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.DomA)
+            {
+                onPerformingActionDomA?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.NonDomA)
+            {
+                onPerformingActionNonDomA?.Invoke(this, EventArgs.Empty);
+            }
+
+        }
+        if (thisHandHoldisActivated)
+        {
+            actionIsEnding = false;
+            if (handInput == HandInput.NonDomB)
+            {
+                onPerformingActionNonDomB?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.DomB)
+            {
+                onPerformingActionDomB?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.UpB)
+            {
+                onPerformingActionUpB?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.DownB)
+            {
+                onPerformingActionDownB?.Invoke(this, EventArgs.Empty);
+            }
+            if (handInput == HandInput.NeutralB)
+            {
+                onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
+            }
+        }
+            
+        
+    }
+
     public void SetIsNotPerformingAction()
     {
-        canPerformAction = false;
+        canPerformSmash = false;
     }
 
     private void CheckIfIsPressingActionButtons()
@@ -209,20 +349,33 @@ public class HandInputScript : MonoBehaviour
     {
         CheckIfIsPressingActionButtons();
 
-        //if(thishandgrabisactivated || thishandtriggerisactivated)
-        //{
-        //    canperformaction = true;
-        //}
+        if (!thisHandHoldisActivated && !thisHandTriggerIsActivated)
+        {
+            canPerformSmash = true;
+
+            
+        }
+
+        
     }
 
     public bool GetCanPerformingAction()
     {
-        return canPerformAction;
+        return canPerformSmash;
     }
 
     public void SetCanPerformAction(bool canPerformAction)
     {
-        this.canPerformAction = canPerformAction;
+        this.canPerformSmash = canPerformAction;
+    }
+    public void SetActionIsEnding(bool actionIsEnding)
+    {
+        this.actionIsEnding = this.actionIsEnding;
+    }
+
+    public bool GetActionIsEnding()
+    {
+        return actionIsEnding;
     }
 
     public bool GetThisHandTriggerIsActivated()
