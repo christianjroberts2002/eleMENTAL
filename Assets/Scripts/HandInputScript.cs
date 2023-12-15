@@ -47,6 +47,8 @@ public class HandInputScript : MonoBehaviour
 
     private bool isRightHand;
 
+    [SerializeField] private bool needsToRealeaseButton;
+
 
     //reference to the input Mangager
     [SerializeField] private HVRPlayerInputs playerInputScript;
@@ -111,16 +113,12 @@ public class HandInputScript : MonoBehaviour
 
         CheckIfIsPerformingAction();
 
-
-
-
-
         SetRealeasedInput();
 
         SetInput();
 
 
-        if (canPerformSmash)
+        if (canPerformSmash && !needsToRealeaseButton)
         {
             ReadInput();
         }
@@ -227,6 +225,7 @@ public class HandInputScript : MonoBehaviour
 
         if (thisHVRController.GripButtonState.JustDeactivated)
         {
+            needsToRealeaseButton = false;
             actionIsEnding = true;
             if (handInput == HandInput.NeutralA)
             {
@@ -252,6 +251,7 @@ public class HandInputScript : MonoBehaviour
 
         if(thisHVRController.TriggerButtonState.JustDeactivated)
             {
+            needsToRealeaseButton = false;
                 actionIsEnding = true;
                 if (handInput == HandInput.NonDomB)
                 {
@@ -282,7 +282,7 @@ public class HandInputScript : MonoBehaviour
 
     private void SetInput()
     {
-        if (thisHandTriggerIsActivated)
+        if (thisHandTriggerIsActivated && !needsToRealeaseButton)
         {
             actionIsEnding = false;
             if (handInput == HandInput.NeutralA)
@@ -307,7 +307,7 @@ public class HandInputScript : MonoBehaviour
             }
 
         }
-        if (thisHandHoldisActivated)
+        if (thisHandHoldisActivated && !needsToRealeaseButton)
         {
             actionIsEnding = false;
             if (handInput == HandInput.NonDomB)
@@ -405,5 +405,10 @@ public class HandInputScript : MonoBehaviour
     public bool GetThisHandHoldIsActivated()
     {
         return thisHandHoldisActivated;
+    }
+
+    public void SetNeedsToReleaseButton(bool needsToReleaseButton)
+    {
+        this.needsToRealeaseButton = needsToReleaseButton;
     }
 }

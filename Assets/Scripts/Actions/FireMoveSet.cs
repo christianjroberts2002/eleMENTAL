@@ -241,7 +241,7 @@ public class FireMoveSet : InputManager
     public void ActionDomB(Transform handTransform, HandInputScript handInputScript)
     {
         //Start
-        if(!handInputScript.GetActionIsEnding())
+        if(!handInputScript.GetActionIsEnding() && domBTimer > 0)
         {
             ActionTimer(ref domBTimer, 10);
             
@@ -253,7 +253,10 @@ public class FireMoveSet : InputManager
         //End
         if(handInputScript.GetActionIsEnding() || domBTimer < 0)
         {
-            Debug.Log("test");
+
+        }
+        if(handInputScript.GetActionIsEnding())
+        {
             domBTimer = 5;
         }
 
@@ -277,6 +280,11 @@ public class FireMoveSet : InputManager
 
     public void ActionDownB(HandInputScript handInputScript, Transform handTransform, Rigidbody playerRb, float flySpeed, HVRHandGrabber handHaptic, ParticleSystem downBParticleSystem)
     {
+        if (flyTimer < 0)
+        {
+            handInputScript.SetNeedsToReleaseButton(true);
+        }
+
         if (!handInputScript.GetActionIsEnding())
         {
           
@@ -294,10 +302,11 @@ public class FireMoveSet : InputManager
                 playerRb.AddForce(flyDir * flySpeed * flySpeedMultiplyer, ForceMode.Force);
             }
         }
+        
         }
         else if(handInputScript.GetActionIsEnding())
         {
-            
+            handInputScript.SetNeedsToReleaseButton(false);
         }
 
     }
