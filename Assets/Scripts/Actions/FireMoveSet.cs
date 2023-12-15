@@ -57,7 +57,7 @@ public class FireMoveSet : InputManager
 
     //Timers
     private float flySpeedMultiplyer = 5f;
-    private float domBTimer = 2f;
+    [SerializeField] private float domBTimer = 2f;
 
     //Flying
 
@@ -142,37 +142,53 @@ public class FireMoveSet : InputManager
         //Make a function
         if(domHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0)
         {
-            domSpeed += 0.25f;
+            domSpeed += Time.deltaTime * 0.25f;
             domDownBFirePorjectile.Play();
         }
         else
         {
-            
             if(domSpeed > 0)
             {
-                domSpeed--;
+                domSpeed -= Time.deltaTime;
                 domDownBFirePorjectile.Stop();
 
             }
+        }
+
+
+        if(domHandInputScript.GetThisHandHoldIsActivated())
+        {
+            if (domBTimer > 0)
+            {
+                domBTimer -= .25f * Time.deltaTime;
+            }
+        }
+        else
+        {
+
+            domBTimer = 5f;
+
         }
 
         //Make A funtion
         domDownBFirePorjectile.startSpeed = domSpeed;
         if(nonDomHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0)
         {
-            nonDomSpeed += 0.25f;
+            nonDomSpeed += Time.deltaTime * 0.25f;
             nonDomDownBFirePorjectile.Play();
         }
         else
         {
-            
+
             if(nonDomSpeed > 0)
             {
-                nonDomSpeed--;
+                nonDomSpeed -= 10 * Time.deltaTime;
                 nonDomDownBFirePorjectile.Stop();
             }
             
         }
+
+        
 
        
         //Make a Function
@@ -241,16 +257,20 @@ public class FireMoveSet : InputManager
 
     public void ActionDomB(Transform handTransform, HandInputScript handInputScript)
     {
-        
-
-        domBTimer = ActionTimer(domBTimer, 1);
-        if(domBStartPos == null)
-        {
-            domBStartPos = handTransform.position;
-        }
+        //Start
         if(handInputScript.GetActionIsEnding())
         {
-
+            
+            
+            if (domBStartPos == null)
+            {
+                domBStartPos = handTransform.position;
+            }
+        }
+        //End
+        if(handInputScript.GetActionIsEnding() || domBTimer < 0)
+        {
+            Debug.Log("test");
         }
 
 
@@ -273,25 +293,20 @@ public class FireMoveSet : InputManager
 
     public void ActionDownB(HandInputScript handInputScript, Transform handTransform, Rigidbody playerRb, float flySpeed, HVRHandGrabber handHaptic, ParticleSystem downBParticleSystem)
     {
-        if(!handInputScript.GetActionIsEnding())
+        
+        DownBTimer();
+        if (playerRb.gameObject.transform.position.y < maxFlyHeight && flyTimer > 0)
         {
-            DownBTimer();
-            if (playerRb.gameObject.transform.position.y < maxFlyHeight && flyTimer > 0)
+
+
+            Debug.Log("Fly");
+            amplitude = flySpeed * .05f;
+            handHaptic.Controller.Vibrate(amplitude, duration, frequency);
+            Vector3 flyDir = (handTransform.right * 20) + transform.up;
+            if (playerRb.velocity.magnitude < maxFlySpeed)
             {
-
-
-                Debug.Log("Fly");
-                amplitude = flySpeed * .05f;
-                handHaptic.Controller.Vibrate(amplitude, duration, frequency);
-                Vector3 flyDir = (handTransform.right * 20) + transform.up;
-                if (playerRb.velocity.magnitude < maxFlySpeed)
-                {
-                    playerRb.AddForce(flyDir * flySpeed * flySpeedMultiplyer, ForceMode.Force);
-                }
+                playerRb.AddForce(flyDir * flySpeed * flySpeedMultiplyer, ForceMode.Force);
             }
-        }else if(handInputScript.GetActionIsEnding())
-        {
-            Debug.Log("oneFrame");
         }
         
     }

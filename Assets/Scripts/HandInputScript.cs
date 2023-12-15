@@ -1,11 +1,17 @@
 using HurricaneVR.Framework.ControllerInput;
+using HurricaneVR.Framework.ControllerInput.InputEvents;
+using HurricaneVR.Framework.Shared;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HandInputScript : MonoBehaviour
 {
+    //HVR Controllers
+    private HVRController thisHVRController;
+
 
     [SerializeField] private bool canPerformSmash = true;
     [SerializeField] private bool canPerformSpecial = true;
@@ -72,19 +78,32 @@ public class HandInputScript : MonoBehaviour
     //References
 
     [SerializeField] private HVRTrackedController HVRTrackedController;
+
+    private void Awake()
+    {
+
+
+
+
+
+
+    }
     private void Start()
     {
-       
-        if(HVRTrackedController.HandSide == HurricaneVR.Framework.Shared.HVRHandSide.Right)
+
+        if (HVRTrackedController.HandSide == HurricaneVR.Framework.Shared.HVRHandSide.Right)
         {
             isRightHand = true;
+            thisHVRController = HVRInputManager.Instance.RightController;
+
         }
         else
         {
-            isRightHand = false;    
+            isRightHand = false;
+            thisHVRController = HVRInputManager.Instance.LeftController;
         }
 
-      handInputDirection = gameObject.GetComponent<HandInputDirection>();
+        handInputDirection = gameObject.GetComponent<HandInputDirection>();
     }
 
     void Update()
@@ -92,7 +111,9 @@ public class HandInputScript : MonoBehaviour
 
         CheckIfIsPerformingAction();
 
-        
+
+
+
 
         SetRealeasedInput();
 
@@ -105,6 +126,8 @@ public class HandInputScript : MonoBehaviour
         }
 
     }
+
+
 
     private void ReadInput()
     {
@@ -201,9 +224,10 @@ public class HandInputScript : MonoBehaviour
 
     public void SetRealeasedInput()
     {
-        if (!thisHandTriggerIsActivated && actionIsEnding == false)
+        
+        if (thisHVRController.GripButtonState.JustDeactivated)
         {
-            
+            actionIsEnding = true;
 
             if (handInput == HandInput.NeutralA)
             {
@@ -225,13 +249,6 @@ public class HandInputScript : MonoBehaviour
             {
                 onPerformingActionNonDomA?.Invoke(this, EventArgs.Empty);
             }
-            
-
-        }
-        if (!thisHandHoldisActivated && actionIsEnding == false)
-        {
-            
-            
 
             if (handInput == HandInput.NonDomB)
             {
@@ -255,10 +272,8 @@ public class HandInputScript : MonoBehaviour
                 onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
             }
             Debug.Log(handInput);
-            
-        }
 
-        
+        }
     }
 
     private void SetInput()
@@ -266,7 +281,7 @@ public class HandInputScript : MonoBehaviour
         if (thisHandTriggerIsActivated)
         {
             actionIsEnding = false;
-            if(handInput == HandInput.NeutralA)
+            if (handInput == HandInput.NeutralA)
             {
                 onPerformingActionNeutralA?.Invoke(this, EventArgs.Empty);
             }
@@ -274,7 +289,7 @@ public class HandInputScript : MonoBehaviour
             {
                 onPerformingActionDownA?.Invoke(this, EventArgs.Empty);
             }
-            if(handInput == HandInput.UpA)
+            if (handInput == HandInput.UpA)
             {
                 onPerformingActionUpA?.Invoke(this, EventArgs.Empty);
             }
@@ -312,8 +327,8 @@ public class HandInputScript : MonoBehaviour
                 onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
             }
         }
-            
-        
+
+
     }
 
     public void SetIsNotPerformingAction()
@@ -324,14 +339,14 @@ public class HandInputScript : MonoBehaviour
     private void CheckIfIsPressingActionButtons()
     {
 
-        if(isRightHand)
+        if (isRightHand)
         {
             //BInputs Special Attacks
             thisHandHoldisActivated = HVRPlayerInputs.Instance.IsRightHoldActive;
-            
+
             //AInputs Smash Attacks
             thisHandTriggerIsActivated = HVRPlayerInputs.Instance.IsRightTriggerHoldActive;
-            
+
         }
         else
         {
@@ -340,9 +355,9 @@ public class HandInputScript : MonoBehaviour
 
             //AInputs Smash Attacks
             thisHandTriggerIsActivated = HVRPlayerInputs.Instance.IsLeftTriggerHoldActive;
-            
+
         }
-        
+
     }
 
     private void CheckIfIsPerformingAction()
@@ -353,10 +368,10 @@ public class HandInputScript : MonoBehaviour
         {
             canPerformSmash = true;
 
-            
+
         }
 
-        
+
     }
 
     public bool GetCanPerformingAction()

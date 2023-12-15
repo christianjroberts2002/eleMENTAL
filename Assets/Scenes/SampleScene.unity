@@ -282,7 +282,13 @@ PrefabInstance:
       addedObject: {fileID: 1707186561}
     - targetCorrespondingSourceObject: {fileID: 2672504564392622155, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
       insertIndex: 2
+      addedObject: {fileID: 1707186582}
+    - targetCorrespondingSourceObject: {fileID: 2672504564392622155, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
+      insertIndex: 3
       addedObject: {fileID: 1707186571}
+    - targetCorrespondingSourceObject: {fileID: 2672504564392622155, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1707186581}
     - targetCorrespondingSourceObject: {fileID: 5605324563379077603, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
       insertIndex: 1
       addedObject: {fileID: 816452309}
@@ -2600,7 +2606,7 @@ MonoBehaviour:
   body: {fileID: 155051109}
   domHandRB: {fileID: 0}
   nonDomHandRB: {fileID: 0}
-  domHand: 1
+  domHand: 0
   domHandInputDirectionManager: {fileID: 0}
   nonDomHandInputDirectionManager: {fileID: 0}
 --- !u!114 &742860967
@@ -4846,6 +4852,154 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2672504564392622152, guid: ae0dc9a988adf1848ac652930f105d0e, type: 3}
   m_PrefabInstance: {fileID: 155051107}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1707186581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707186541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ebc937e678155e4d86feeb9248cca97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GrabBehaviour: 0
+  PoseType: 0
+  TrackingType: 0
+  HoldType: 1
+  GrabControl: 0
+  OverrideGrabTrigger: 0
+  GrabTrigger: 0
+  RequireLineOfSight: 1
+  PoseImmediately: 0
+  ParentHandModel: 0
+  BreakDistance: 1
+  BreakDistanceSource: 0
+  Stationary: 0
+  ReleasedAngularConversionFactor: 0
+  ReleasedVelocityFactor: 1
+  ReleasedAngularFactor: 1
+  GrabIndicator: {fileID: 0}
+  ForceGrabIndicator: {fileID: 0}
+  ShowGrabIndicator: 1
+  ShowTriggerGrabIndicator: 1
+  ShowForceGrabIndicator: 1
+  ForceGrabbable: 1
+  ForcePullOverride: {fileID: 0}
+  JointOverride: {fileID: 0}
+  OneHandStrength: {fileID: 0}
+  TwoHandStrength: {fileID: 0}
+  PullingSettingsOverride: {fileID: 0}
+  HandGrabbedClip: {fileID: 0}
+  SocketGrabPoints: []
+  Rigidbody: {fileID: 0}
+  AutoApplyLayer: 1
+  RequireOverlapClearance: 0
+  OverlapTimeout: 0.1
+  FinalJointMaxAngle: 15
+  FinalJointTimeout: 0.25
+  CollisionParents: []
+  ExtraIgnoreCollisionParents: []
+  GrabColliders: []
+  ConsiderGrabPointAngle: 1
+  UseColliderClosestPoint: 1
+  DisableHandCollision: 0
+  AllowMultiplayerSwap: 0
+  MasterGrabbable: {fileID: 0}
+  LinkedGrabbables: []
+  CollisionDetection: 2
+  PhysicsPoserFallback: 1
+  OverrideMaxDistanceBehaviour: 0
+  MaxDistanceBehaviour: 0
+  OneHandJointSettings: {fileID: 0}
+  TwoHandJointSettings: {fileID: 0}
+  StartingSocket: {fileID: 0}
+  LinkStartingSocket: 0
+  ShowBoundingBox: 0
+  DrawCenterOfMass: 0
+  GrabPoints: []
+  Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  Grabbed:
+    m_PersistentCalls:
+      m_Calls: []
+  Released:
+    m_PersistentCalls:
+      m_Calls: []
+  HoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  HoverExit:
+    m_PersistentCalls:
+      m_Calls: []
+  Collided:
+    m_PersistentCalls:
+      m_Calls: []
+  Destroyed:
+    m_PersistentCalls:
+      m_Calls: []
+  HandGrabbed:
+    m_PersistentCalls:
+      m_Calls: []
+  HandReleased:
+    m_PersistentCalls:
+      m_Calls: []
+  HandFullReleased:
+    m_PersistentCalls:
+      m_Calls: []
+  Socketed:
+    m_PersistentCalls:
+      m_Calls: []
+  UnSocketed:
+    m_PersistentCalls:
+      m_Calls: []
+  DistanceGrabbed:
+    m_PersistentCalls:
+      m_Calls: []
+  DistanceReleased:
+    m_PersistentCalls:
+      m_Calls: []
+  GrabPointsMeta: []
+  Grabbers: []
+  HandGrabbers: []
+  Stabbers: []
+  Stabbable: {fileID: 0}
+--- !u!114 &1707186582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707186541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c773e81cb9c97548984b0405de96a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  Deactivated:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1707186571}
+        m_TargetAssemblyTypeName: HandInputScript, Assembly-CSharp
+        m_MethodName: SetRealeasedInput
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  Value: 0
 --- !u!1 &1714737824 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7475751467324674308, guid: fca8e06213f079b45aafcf41bb98e981, type: 3}
