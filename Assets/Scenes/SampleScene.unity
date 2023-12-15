@@ -2634,8 +2634,10 @@ MonoBehaviour:
   nonDomHandSpawn: {fileID: 0}
   rightSpawn: {fileID: 1556244999}
   leftSpawn: {fileID: 2131815021}
-  maxFlyHeight: 100
+  domBTimer: 2
+  maxFlyHeight: 45
   maxFlySpeed: 8
+  flyTimeMultiplier: 100
   flyTimer: 0
   flyTime: 2
   hexaBodyPlayer: {fileID: 902776391}

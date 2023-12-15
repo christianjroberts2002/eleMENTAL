@@ -224,11 +224,10 @@ public class HandInputScript : MonoBehaviour
 
     public void SetRealeasedInput()
     {
-        
+
         if (thisHVRController.GripButtonState.JustDeactivated)
         {
             actionIsEnding = true;
-
             if (handInput == HandInput.NeutralA)
             {
                 onPerformingActionNeutralA?.Invoke(this, EventArgs.Empty);
@@ -249,31 +248,36 @@ public class HandInputScript : MonoBehaviour
             {
                 onPerformingActionNonDomA?.Invoke(this, EventArgs.Empty);
             }
-
-            if (handInput == HandInput.NonDomB)
-            {
-                onPerformingActionNonDomB?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.DomB)
-            {
-                onPerformingActionDomB?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.UpB)
-            {
-                onPerformingActionUpB?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.DownB)
-            {
-                Debug.Log(handInput);
-                onPerformingActionDownB?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.NeutralB)
-            {
-                onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
-            }
-            Debug.Log(handInput);
-
         }
+
+        if(thisHVRController.TriggerButtonState.JustDeactivated)
+            {
+                actionIsEnding = true;
+                if (handInput == HandInput.NonDomB)
+                {
+                    onPerformingActionNonDomB?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.DomB)
+                {
+                    onPerformingActionDomB?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.UpB)
+                {
+                    onPerformingActionUpB?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.DownB)
+                {
+                    Debug.Log(handInput);
+                    onPerformingActionDownB?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.NeutralB)
+                {
+                    onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
+                }
+                Debug.Log(handInput);
+            }
+            
+
     }
 
     private void SetInput()
