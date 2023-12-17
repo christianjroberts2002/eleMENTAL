@@ -4,6 +4,7 @@ using HurricaneVR.Framework.Shared;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -46,6 +47,8 @@ public class HandInputScript : MonoBehaviour
     [SerializeField] private bool otherDomHandHoldisActivated;
 
     private bool isRightHand;
+
+     [SerializeField] private bool handIsActing;
 
     [SerializeField] private bool needsToRealeaseButton;
 
@@ -113,15 +116,19 @@ public class HandInputScript : MonoBehaviour
 
         CheckIfIsPerformingAction();
 
-        SetRealeasedInput();
-
-        SetInput();
 
 
         if (canPerformSmash && !needsToRealeaseButton)
         {
             ReadInput();
         }
+
+
+
+        SetInput();
+
+        SetRealeasedInput();
+
 
     }
 
@@ -223,7 +230,7 @@ public class HandInputScript : MonoBehaviour
     public void SetRealeasedInput()
     {
 
-        if (thisHVRController.GripButtonState.JustDeactivated)
+        if (thisHVRController.TriggerButtonState.JustDeactivated)
         {
             needsToRealeaseButton = false;
             actionIsEnding = true;
@@ -249,7 +256,7 @@ public class HandInputScript : MonoBehaviour
             }
         }
 
-        if(thisHVRController.TriggerButtonState.JustDeactivated)
+        if(thisHVRController.GripButtonState.JustDeactivated)
             {
             needsToRealeaseButton = false;
                 actionIsEnding = true;
@@ -282,56 +289,60 @@ public class HandInputScript : MonoBehaviour
 
     private void SetInput()
     {
-        if (thisHandTriggerIsActivated && !needsToRealeaseButton)
+        if (!handIsActing)
         {
-            actionIsEnding = false;
-            if (handInput == HandInput.NeutralA)
+
+            if (thisHandTriggerIsActivated && !needsToRealeaseButton)
             {
-                onPerformingActionNeutralA?.Invoke(this, EventArgs.Empty);
+                actionIsEnding = false;
+                if (handInput == HandInput.NeutralA)
+                {
+                    onPerformingActionNeutralA?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.DownA)
+                {
+                    onPerformingActionDownA?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.UpA)
+                {
+                    onPerformingActionUpA?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.DomA)
+                {
+                    onPerformingActionDomA?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.NonDomA)
+                {
+                    onPerformingActionNonDomA?.Invoke(this, EventArgs.Empty);
+                }
+
             }
-            if (handInput == HandInput.DownA)
+            if (thisHandHoldisActivated && !needsToRealeaseButton)
             {
-                onPerformingActionDownA?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.UpA)
-            {
-                onPerformingActionUpA?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.DomA)
-            {
-                onPerformingActionDomA?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.NonDomA)
-            {
-                onPerformingActionNonDomA?.Invoke(this, EventArgs.Empty);
+                actionIsEnding = false;
+                if (handInput == HandInput.NonDomB)
+                {
+                    onPerformingActionNonDomB?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.DomB)
+                {
+                    onPerformingActionDomB?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.UpB)
+                {
+                    onPerformingActionUpB?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.DownB)
+                {
+                    onPerformingActionDownB?.Invoke(this, EventArgs.Empty);
+                }
+                if (handInput == HandInput.NeutralB)
+                {
+                    onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
+                }
             }
 
         }
-        if (thisHandHoldisActivated && !needsToRealeaseButton)
-        {
-            actionIsEnding = false;
-            if (handInput == HandInput.NonDomB)
-            {
-                onPerformingActionNonDomB?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.DomB)
-            {
-                onPerformingActionDomB?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.UpB)
-            {
-                onPerformingActionUpB?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.DownB)
-            {
-                onPerformingActionDownB?.Invoke(this, EventArgs.Empty);
-            }
-            if (handInput == HandInput.NeutralB)
-            {
-                onPerformingActionNeutralB?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
 
     }
 
@@ -389,7 +400,7 @@ public class HandInputScript : MonoBehaviour
     }
     public void SetActionIsEnding(bool actionIsEnding)
     {
-        this.actionIsEnding = this.actionIsEnding;
+        this.actionIsEnding = actionIsEnding;
     }
 
     public bool GetActionIsEnding()
@@ -410,5 +421,15 @@ public class HandInputScript : MonoBehaviour
     public void SetNeedsToReleaseButton(bool needsToReleaseButton)
     {
         this.needsToRealeaseButton = needsToReleaseButton;
+    }
+
+    public bool GetHandIsActing()
+    {
+        return handIsActing;
+    }
+
+    public void SetHandIsActing(bool handIsActing)
+    {
+        this.handIsActing = handIsActing;
     }
 }

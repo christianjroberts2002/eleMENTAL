@@ -55,6 +55,7 @@ public class MovementManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        
         if (domHand != Hands.RightHand)
         {
             GameObject tempHand = domHandGO;

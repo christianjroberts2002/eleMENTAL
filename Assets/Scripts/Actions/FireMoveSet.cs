@@ -1,16 +1,20 @@
 using HexabodyVR.PlayerController;
 using HurricaneVR.Framework.Components;
+using HurricaneVR.Framework.Core;
 using HurricaneVR.Framework.Core.Grabbers;
 using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class FireMoveSet : InputManager
 {
+    //FireVisuals
+    [SerializeField] private float maxSpeed;
 
     //Haptics
     HVRHandGrabber domHandHaptics;
@@ -37,6 +41,9 @@ public class FireMoveSet : InputManager
     //Hands
     [SerializeField] GameObject domHandGo;
     [SerializeField] GameObject nonDomHandGo;
+
+    private bool domIsActing;
+    private bool nonDomIsActing;
 
     //Hand Spawn Point
     [SerializeField] Transform domHandSpawn;
@@ -142,7 +149,7 @@ public class FireMoveSet : InputManager
     private void Update()
     {
         //Make a function
-        if(domHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0)
+        if(domHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0 && domSpeed < maxSpeed)
         {
             domSpeed += Time.deltaTime * flyTimeMultiplier;
             domDownBFirePorjectile.Play();
@@ -161,8 +168,7 @@ public class FireMoveSet : InputManager
         
 
         //Make A funtion
-        domDownBFirePorjectile.startSpeed = domSpeed;
-        if(nonDomHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0)
+        if(nonDomHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0 && nonDomSpeed < maxSpeed)
         {
             nonDomSpeed += Time.deltaTime * flyTimeMultiplier;
             nonDomDownBFirePorjectile.Play();
@@ -188,11 +194,11 @@ public class FireMoveSet : InputManager
         ParticleSystem.EmissionModule nonDomEmission = nonDomDownBFirePorjectile.emission;
         nonDomEmission.rateOverTime = nonDomSpeed * 20;
 
-        domDownBFirePorjectile.startSpeed = nonDomSpeed;
-        ParticleSystem.ShapeModule domNewShape = nonDomDownBFirePorjectile.shape;
+        domDownBFirePorjectile.startSpeed = domSpeed;
+        ParticleSystem.ShapeModule domNewShape = domDownBFirePorjectile.shape;
         domNewShape.radius = domSpeed / 30;
-        ParticleSystem.EmissionModule domEmission = nonDomDownBFirePorjectile.emission;
-        nonDomEmission.rateOverTime = domSpeed * 20;
+        ParticleSystem.EmissionModule domEmission = domDownBFirePorjectile.emission;
+        domEmission.rateOverTime = domSpeed * 20;
 
 
 
@@ -240,24 +246,22 @@ public class FireMoveSet : InputManager
 
     public void ActionDomB(Transform handTransform, HandInputScript handInputScript)
     {
+        
         //Start
-        if(!handInputScript.GetActionIsEnding() && domBTimer > 0)
-        {
-            ActionTimer(ref domBTimer, 10);
-            
-            if (domBStartPos == null)
-            {
-                domBStartPos = handTransform.position;
-            }
-        }
-        //End
-        if(handInputScript.GetActionIsEnding() || domBTimer < 0)
+        if(!handInputScript.GetActionIsEnding())
         {
 
+            GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
+            Debug.Log("why");
+            handInputScript.SetHandIsActing(true);
+            handInputScript.GetComponent<GrabOnAwaket>().Grabbable = fireProjectile.GetComponent<HVRGrabbable>();
+            Destroy(fireProjectile, 3f);
+
         }
-        if(handInputScript.GetActionIsEnding())
+        //End
+        if (handInputScript.GetActionIsEnding())
         {
-            domBTimer = 5;
+            handInputScript.SetHandIsActing(false);
         }
 
 
@@ -313,8 +317,7 @@ public class FireMoveSet : InputManager
 
     public void ActionNeutralA(Transform handTransform)
     {
-       GameObject fireProjectile =  Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
-       Destroy(fireProjectile, 2f);
+       
     }
     public void ActionNeutralB(Transform handTransform)
     {
@@ -330,6 +333,7 @@ public class FireMoveSet : InputManager
 
     public void ActionNonDomB(Transform handTransform)
     {
+
         GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
         Destroy(fireProjectile, 2f);
     }
