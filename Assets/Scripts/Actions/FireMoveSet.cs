@@ -2,6 +2,8 @@ using HexabodyVR.PlayerController;
 using HurricaneVR.Framework.Components;
 using HurricaneVR.Framework.Core;
 using HurricaneVR.Framework.Core.Grabbers;
+using HurricaneVR.Framework.Core.HandPoser;
+using HurricaneVR.Framework.Shared;
 using JetBrains.Annotations;
 using System;
 using System.Collections;
@@ -148,41 +150,42 @@ public class FireMoveSet : InputManager
 
     private void Update()
     {
-        //Make a function
-        if(domHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0 && domSpeed < maxSpeed)
-        {
-            domSpeed += Time.deltaTime * flyTimeMultiplier;
-            domDownBFirePorjectile.Play();
-        }
-        else
-        {
-            if(domSpeed > 0)
-            {
-                domSpeed -= flyTimeMultiplier * Time.deltaTime;
-                domDownBFirePorjectile.Stop();
+        ////Make a function
+        //if(domHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0 && domSpeed < maxSpeed)
+        //{
+        //    domSpeed += Time.deltaTime * flyTimeMultiplier;
+            
+        //    domDownBFirePorjectile.Play();
+        //}
+        //else
+        //{
+        //    if(domSpeed > 0)
+        //    {
+        //        domSpeed -= flyTimeMultiplier * Time.deltaTime;
+        //        domDownBFirePorjectile.Stop();
 
-            }
-        }
+        //    }
+        //}
 
 
         
 
-        //Make A funtion
-        if(nonDomHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0 && nonDomSpeed < maxSpeed)
-        {
-            nonDomSpeed += Time.deltaTime * flyTimeMultiplier;
-            nonDomDownBFirePorjectile.Play();
-        }
-        else
-        {
+        ////Make A funtion
+        //if(nonDomHandInputScript.GetThisHandHoldIsActivated() && flyTimer > 0 && nonDomSpeed < maxSpeed)
+        //{
+        //    nonDomSpeed += Time.deltaTime * flyTimeMultiplier;
+        //    nonDomDownBFirePorjectile.Play();
+        //}
+        //else
+        //{
 
-            if(nonDomSpeed > 0)
-            {
-                nonDomSpeed -= flyTimeMultiplier * Time.deltaTime;
-                nonDomDownBFirePorjectile.Stop();
-            }
+        //    if(nonDomSpeed > 0)
+        //    {
+        //        nonDomSpeed -= flyTimeMultiplier * Time.deltaTime;
+        //        nonDomDownBFirePorjectile.Stop();
+        //    }
             
-        }
+        //}
 
         
 
@@ -253,15 +256,22 @@ public class FireMoveSet : InputManager
 
             GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
             Debug.Log("why");
+            HVRHandGrabber handGrabber = handInputScript.gameObject.GetComponent<HVRHandGrabber>();
+            HVRHandGrabOnStart grabOnStart = fireProjectile.GetComponent<HVRHandGrabOnStart>();
+            grabOnStart.Grabbable = fireProjectile.GetComponent<HVRGrabbable>();
+            grabOnStart.Grabber = handGrabber;
+            
             handInputScript.SetHandIsActing(true);
-            handInputScript.GetComponent<GrabOnAwaket>().Grabbable = fireProjectile.GetComponent<HVRGrabbable>();
             Destroy(fireProjectile, 3f);
 
         }
         //End
         if (handInputScript.GetActionIsEnding())
         {
+            HVRHandGrabber handGrabber = handInputScript.gameObject.GetComponent<HVRHandGrabber>();
             handInputScript.SetHandIsActing(false);
+            handGrabber.ForceRelease();
+            
         }
 
 
@@ -282,11 +292,12 @@ public class FireMoveSet : InputManager
         //}
     }
 
-    public void ActionDownB(HandInputScript handInputScript, Transform handTransform, Rigidbody playerRb, float flySpeed, HVRHandGrabber handHaptic, ParticleSystem downBParticleSystem)
+    public void ActionDownB(HandInputScript handInputScript, Transform handTransform, Rigidbody playerRb, ref float flySpeed, HVRHandGrabber handHaptic, ParticleSystem downBParticleSystem)
     {
         if (flyTimer < 0)
         {
             handInputScript.SetNeedsToReleaseButton(true);
+            downBParticleSystem.Stop();
         }
 
         if (!handInputScript.GetActionIsEnding())
@@ -295,9 +306,16 @@ public class FireMoveSet : InputManager
         ActionTimer(ref flyTimer, 1);
         if (playerRb.gameObject.transform.position.y < maxFlyHeight && flyTimer > 0)
         {
+                //Make a function
+                if (handInputScript.GetThisHandHoldIsActivated() && flyTimer > 0 && flySpeed < maxSpeed)
+                {
+                    flySpeed += Time.deltaTime * flyTimeMultiplier;
+
+                    downBParticleSystem.Play();
+                }
 
 
-            Debug.Log("Fly");
+                Debug.Log("Fly");
             amplitude = flySpeed * .05f;
             handHaptic.Controller.Vibrate(amplitude, duration, frequency);
             Vector3 flyDir = (handTransform.right * 20) + transform.up;
@@ -311,6 +329,8 @@ public class FireMoveSet : InputManager
         else if(handInputScript.GetActionIsEnding())
         {
             handInputScript.SetNeedsToReleaseButton(false);
+            flySpeed -= flyTimeMultiplier * Time.deltaTime;
+            downBParticleSystem.Stop();
         }
 
     }
@@ -369,7 +389,7 @@ public class FireMoveSet : InputManager
 
     public override void domHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
     {
-        ActionDownB(domHandInputScript, domHandSpawn, playerRb, domSpeed, domHandHaptics, domDownBFirePorjectile);
+        ActionDownB(domHandInputScript, domHandSpawn, playerRb, ref domSpeed, domHandHaptics, domDownBFirePorjectile);
     }
 
     public override void domHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
@@ -389,7 +409,7 @@ public class FireMoveSet : InputManager
 
     public override void domHandInputScript_onPerformingActionNonDomB(object sender, EventArgs e)
     {
-        ActionNonDomB(domHandSpawn);
+        ActionDomB(domHandSpawn, domHandInputScript);
     }
 
     public override void domHandInputScript_onPerformingActionUpA(object sender, EventArgs e)
@@ -419,7 +439,7 @@ public class FireMoveSet : InputManager
 
     public override void nonDomHandInputScript_onPerformingActionDownB(object sender, EventArgs e)
     {
-        ActionDownB(nonDomHandInputScript,  nonDomHandSpawn, playerRb, nonDomSpeed, nonDomHandHaptics, nonDomDownBFirePorjectile);
+        ActionDownB(nonDomHandInputScript,  nonDomHandSpawn, playerRb, ref nonDomSpeed, nonDomHandHaptics, nonDomDownBFirePorjectile);
     }
 
     public override void nonDomHandInputScript_onPerformingActionNeutralA(object sender, EventArgs e)
@@ -439,7 +459,7 @@ public class FireMoveSet : InputManager
 
     public override void nonDomHandInputScript_onPerformingActionNonDomB(object sender, EventArgs e)
     {
-        ActionNonDomB(nonDomHandSpawn);
+        ActionDomB(nonDomHandSpawn, nonDomHandInputScript);
     }
 
     public override void nonDomHandInputScript_onPerformingActionUpA(object sender, EventArgs e)
