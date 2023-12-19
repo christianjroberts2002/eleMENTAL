@@ -4,7 +4,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 using UnityEngine.XR;
-using static RayFire.RayfireBomb;
 
 public class HandInputDirection : MonoBehaviour
 {

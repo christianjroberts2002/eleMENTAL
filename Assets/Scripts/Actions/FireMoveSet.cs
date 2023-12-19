@@ -339,10 +339,30 @@ public class FireMoveSet : InputManager
     {
        
     }
-    public void ActionNeutralB(Transform handTransform)
+    public void ActionNeutralB(HandInputScript handInputScript ,Transform handTransform)
     {
-        GameObject fireProjectile = Instantiate(fireProjectilePrefab, handTransform.position, handTransform.rotation);
-        Destroy(fireProjectile, 2f);
+        
+        if(!handInputScript.GetActionIsEnding())
+        {
+            if(domBStartPos == Vector3.zero)
+            {
+                domBStartPos = handTransform.position;
+            }
+
+        }
+        else if(handInputScript.GetActionIsEnding())
+        {
+            domBEndPos = handTransform.position;
+            Vector3 middlepoint = Vector3.Lerp(domBEndPos, domBStartPos, 0.5f);
+            GameObject fireSlash = Instantiate(fireProjectilePrefab, middlepoint, Quaternion.identity);
+            fireSlash.transform.LookAt(domBEndPos, fireSlash.transform.up);
+            fireSlash.transform.localScale = new Vector3(.15f, Vector3.Distance(domBStartPos, domBEndPos), .15f);
+            fireSlash.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            fireSlash.transform.GetChild(0).gameObject.SetActive(false);
+            Destroy(fireSlash, 5f);
+            domBStartPos = Vector3.zero;
+        }
+        
     }
 
     public void ActionNonDomA(Transform handTransform)
@@ -399,7 +419,7 @@ public class FireMoveSet : InputManager
 
     public override void domHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
     {
-        ActionNeutralB(domHandSpawn);
+        ActionNeutralB(domHandInputScript, domHandSpawn);
     }
 
     public override void domHandInputScript_onPerformingActionNonDomA(object sender, EventArgs e)
@@ -449,7 +469,7 @@ public class FireMoveSet : InputManager
 
     public override void nonDomHandInputScript_onPerformingActionNeutralB(object sender, EventArgs e)
     {
-        ActionNeutralB(nonDomHandSpawn);
+        ActionNeutralB(nonDomHandInputScript, nonDomHandSpawn);
     }
 
     public override void nonDomHandInputScript_onPerformingActionNonDomA(object sender, EventArgs e)
